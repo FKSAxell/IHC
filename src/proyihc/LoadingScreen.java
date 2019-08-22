@@ -50,7 +50,7 @@ public class LoadingScreen {
     public LoadingScreen(){
         b=new Button("Cargar Archivo");
         fc= new FileChooser();
-        //fc.setInitialDirectory(new File(System.getProperty("user.home")));
+        fc.setInitialDirectory(new File(System.getProperty("user.home")));
         l= new Label("¡Arrastra el Archivo!");
         l.setFont(new Font("Showcard Gothic", 10));
         try {
