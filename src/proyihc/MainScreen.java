@@ -17,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
@@ -73,7 +74,11 @@ public class MainScreen {
         v.getChildren().addAll(texto,graficos,anexos,volver);
         root.getChildren().addAll(h,v);
         texto.setOnAction(e->vertexto());
-        graficos.setOnAction(e->System.out.println("Graficos"));
+        graficos.setOnAction(e->{
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setContentText("El presente trabajo no posee graficos");
+            a.showAndWait();
+        });
         anexos.setOnAction(e->System.out.println("Anexos"));
         volver.setOnAction(e->volver());
         
