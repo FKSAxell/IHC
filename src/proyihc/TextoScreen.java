@@ -17,9 +17,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -27,29 +28,30 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jsoup.Jsoup;
 
 /**
  *
  * @author medin
  */
-public class MainScreen {
+public class TextoScreen {
     Label l;
     File f;
-    Button texto,graficos,anexos,volver;
-    VBox root,v;
+    Button volver;
+    VBox root,v,v1;
+    HBox h1;
+    TextArea text;
     
-    public MainScreen(File f){
+    public TextoScreen(File f){
         this.f=f;
+        
         InicializarComponentes();
-        System.out.println(this.f.getPath());
         Diseño();
         leerexcel();
-        
     }
     public Parent getroot(){
         return root;
@@ -58,9 +60,10 @@ public class MainScreen {
         root= new VBox(20);
         l= new Label();
         l.setFont(new Font(20));
-        texto= new Button("Ver Texto");
-        graficos= new Button("Ver Graficos");
-        anexos= new Button("Ver Anexos");
+        text= new TextArea();
+        text.setMinSize(600, 300);
+        text.setEditable(false);
+        text.setWrapText(true);
         volver= new Button("Volver");
         HBox h= new HBox(30);
         h.setPadding(new Insets(40, 50, 0, 80));
@@ -69,19 +72,14 @@ public class MainScreen {
         im.setFitWidth(70);
         im.setFitHeight(70);
         h.getChildren().addAll(l);
+        h1= new HBox();
+        v1= new VBox(10);
         v= new VBox(20);
-        v.setPadding(new Insets(50, 300, 50, 300));
-        v.getChildren().addAll(texto,graficos,anexos,volver);
-        root.getChildren().addAll(h,v);
-        texto.setOnAction(e->vertexto());
-        graficos.setOnAction(e->{
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setContentText("El presente trabajo no posee graficos");
-            a.showAndWait();
-        });
-        anexos.setOnAction(e->System.out.println("Anexos"));
-        volver.setOnAction(e->volver());
-        
+        v.setPadding(new Insets(50, 50, 50, 50));
+        v.getChildren().addAll(text,volver);
+        h1.getChildren().addAll(v1,v);
+        root.getChildren().addAll(h,h1);
+        volver.setOnAction(e-> volver());
         
     }
     public void Diseño(){
@@ -117,7 +115,7 @@ public class MainScreen {
     }
 
     private void volver() {
-        LoadingScreen m= new LoadingScreen();
+        MainScreen m= new MainScreen(f);
         Scene s= new Scene(m.getroot(), 800, 500);
         Stage st=(Stage)root.getScene().getWindow();
        
@@ -132,14 +130,13 @@ public class MainScreen {
             XSSFSheet sheet= wb.getSheetAt(0);
             Iterator rowit= sheet.rowIterator();
             while (rowit.hasNext()) {
-                XSSFRow celdaDeFila =(XSSFRow) rowit.next();
-                Iterator it= celdaDeFila.cellIterator();
-                while (it.hasNext()) {
-                    XSSFCell celda = (XSSFCell)it.next();
+                XSSFRow row =(XSSFRow) rowit.next();
+                Iterator column= row.cellIterator();
+                while (column.hasNext()) {
+                    XSSFCell celda = (XSSFCell)column.next();
                     Celdat.add(celda);
                 }
                 celldata.add(Celdat);
-            
             
             }
         } catch (Exception e) {
@@ -147,24 +144,31 @@ public class MainScreen {
         obtener(celldata);
     }
     public void obtener(List CellDataList){
+        List fila=new ArrayList();
+        List fin=new ArrayList() ;
+        System.out.println(CellDataList.size());
+        for (int i = 3; i < CellDataList.size(); i++) {
+            Button b= new Button("Version "+(i-3));
+            v1.getChildren().add(b);
+        }
         for (int i = 0; i < CellDataList.size(); i++) {
-            List cellTempList= (List) CellDataList.get(i);
-            l.setText(cellTempList.get(0).toString());
-//            System.out.println("<<<<<<"+cellTempList.get(i));
-            for (int j = 0; j < cellTempList.size(); j++) {
-                XSSFCell celda=(XSSFCell) cellTempList.get(j);
-                String valorcelda= celda.toString();
-//                System.out.println(valorcelda);
-               
+            fila= (List) CellDataList.get(i);
+            l.setText(fila.get(0).toString());
+            System.out.println("<<<<<<"+fila.get(3));
+            fin=(List) CellDataList.get(6);
+            
+            for (int j = 0; j < fila.size(); j++) {
+                XSSFCell celda=(XSSFCell) fila.get(j);
+//                System.out.println(celda.toString()+"\n");
+//                String valorcelda= celda.toString();
+//                text.setText(text.getText()+"\n"+valorcelda);
             }
         }
-    }
-
-    private void vertexto() {
-        TextoScreen m= new TextoScreen(f);
-        Scene s= new Scene(m.getroot(), 800, 500);
-        Stage st=(Stage)root.getScene().getWindow();
-       
-        st.setScene(s);
+        XSSFCell celda=(XSSFCell) fila.get(fin.size()-1);
+        text.setText(l.getText()+""+text.getText()+"\n\n"+Jsoup.parse(celda.toString()).wholeText());
+//        
+//        text.setText(l.getText()+""+text.getText()+"\n"+celda.toString());
+        System.out.println(celda.toString());
+        
     }
 }
