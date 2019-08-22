@@ -24,7 +24,7 @@ public class MindStorm extends Application {
         st.setScene(scene);
         
         
-        st.setOpacity(0.94);
+//        st.setOpacity(0.94);
         st.show();
     }
 
