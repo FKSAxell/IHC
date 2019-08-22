@@ -5,22 +5,8 @@
  */
 package proyihc;
 
-import java.io.File;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.input.DragEvent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.TransferMode;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -36,7 +22,7 @@ public class MindStorm extends Application {
         Scene scene = new Scene(l.getroot(), 800, 500);
         st.setTitle("MindStorm");
         st.setScene(scene);
-        st.initStyle(StageStyle.UNDECORATED);
+        
         
         st.setOpacity(0.94);
         st.show();

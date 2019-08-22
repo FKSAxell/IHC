@@ -6,7 +6,9 @@
 package proyihc;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -48,20 +50,24 @@ public class LoadingScreen {
     public LoadingScreen(){
         b=new Button("Cargar Archivo");
         fc= new FileChooser();
+        //fc.setInitialDirectory(new File(System.getProperty("user.home")));
         l= new Label("¡Arrastra el Archivo!");
         l.setFont(new Font("Showcard Gothic", 10));
-        BackgroundImage myBI= new BackgroundImage(new Image("img/3.png",true),
-        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
-        BackgroundSize.DEFAULT);
-        root.setBackground(new Background(myBI));
-//        root.setBackground(new Background(new BackgroundFill(Color.DARKTURQUOISE, CornerRadii.EMPTY, Insets.EMPTY)));
+        try {
+            BackgroundImage myBI= new BackgroundImage(new Image("img/3.png",true),
+            BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
+            BackgroundSize.DEFAULT);
+            root.setBackground(new Background(myBI));
+        } catch (Exception e) {
+            root.setBackground(new Background(new BackgroundFill(Color.DARKTURQUOISE, CornerRadii.EMPTY, Insets.EMPTY)));
+        }
+        
         root.setPadding(new Insets(400, 300, 50, 300));
         root.getChildren().addAll(b,l);
         l.setOnMouseEntered(e-> l.setEffect(new DropShadow(10, Color.BLUE)));
         l.setOnMouseExited(e-> l.setEffect(null));
         b.setOnAction(e->{
-            fc.setInitialDirectory(new File(System.getProperty("user.home")));
-            f=fc.showOpenDialog(root.getScene().getWindow());
+            f=(File)fc.showOpenDialog(root.getScene().getWindow());
             if(f!=null){
                 CambiarVentana();
             }
@@ -71,6 +77,7 @@ public class LoadingScreen {
         //drag();
         
     }
+    
     public void drag(){
         root.setOnDragOver(e->{
              if (e.getGestureSource() != root
