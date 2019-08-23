@@ -24,8 +24,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -45,7 +49,9 @@ public class TextoScreen {
     VBox root,v,v1;
     HBox h1;
     TextArea text;
-    
+    int var=200;
+    static int i=0;
+    String textoori;
     public TextoScreen(File f){
         this.f=f;
         
@@ -57,7 +63,7 @@ public class TextoScreen {
         return root;
     }
     public void InicializarComponentes(){
-        root= new VBox(20);
+        root= new VBox(05);
         l= new Label();
         l.setFont(new Font(20));
         text= new TextArea();
@@ -65,7 +71,7 @@ public class TextoScreen {
         text.setEditable(false);
         text.setWrapText(true);
         volver= new Button("Volver");
-        HBox h= new HBox(30);
+        HBox h= new HBox(20);
         h.setPadding(new Insets(40, 50, 0, 80));
         ImageView im= new ImageView(new Image("img/logo.png"));
         im.setOpacity(0.94);
@@ -74,13 +80,13 @@ public class TextoScreen {
         h.getChildren().addAll(l);
         h1= new HBox();
         v1= new VBox(10);
-        v= new VBox(20);
-        v.setPadding(new Insets(50, 50, 50, 50));
+        v= new VBox(10);
+        v.setPadding(new Insets(20, 50, 50, 50));
         v.getChildren().addAll(text,volver);
         h1.getChildren().addAll(v1,v);
         root.getChildren().addAll(h,h1);
         volver.setOnAction(e-> volver());
-        
+        root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
     public void Diseño(){
         ObservableList<Node> o=v.getChildren();
@@ -147,9 +153,15 @@ public class TextoScreen {
         List fila=new ArrayList();
         List fin=new ArrayList() ;
         System.out.println(CellDataList.size());
-        for (int i = 3; i < CellDataList.size(); i++) {
+        
+        for (i=3; i < 7; i++) {
             Button b= new Button("Version "+(i-3));
             v1.getChildren().add(b);
+            b.setOnAction(e->{
+                textoori=text.getText();
+                var=var-50;
+                text.setText(textoori.substring(0,var));
+            });
         }
         for (int i = 0; i < CellDataList.size(); i++) {
             fila= (List) CellDataList.get(i);
