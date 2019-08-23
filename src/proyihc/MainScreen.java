@@ -19,12 +19,17 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -69,17 +74,34 @@ public class MainScreen {
         im.setFitWidth(70);
         im.setFitHeight(70);
         h.getChildren().addAll(l);
+        
+        root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         v= new VBox(20);
         v.setPadding(new Insets(50, 300, 50, 300));
         v.getChildren().addAll(texto,graficos,anexos,volver);
         root.getChildren().addAll(h,v);
         texto.setOnAction(e->vertexto());
         graficos.setOnAction(e->{
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setContentText("El presente trabajo no posee graficos");
-            a.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            
+        alert.setTitle("VER GRAFICOS");
+        alert.setHeaderText("");
+        alert.setContentText("No se encontraron graficos en el presente documento");
+        
+ 
+        alert.showAndWait();
         });
-        anexos.setOnAction(e->System.out.println("Anexos"));
+        anexos.setOnAction(e->{
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            
+        alert.setTitle("NO HAY ANEXOS");
+        alert.setHeaderText("");
+        alert.setContentText("No existen anexos en el presente documento");
+        
+ 
+        alert.showAndWait();
+       
+        });
         volver.setOnAction(e->volver());
         
         
@@ -88,7 +110,7 @@ public class MainScreen {
         ObservableList<Node> o=v.getChildren();
         for (Node node : o) {
             if(node instanceof Button){
-                ((Button) node).setMinSize(150, 60);
+                ((Button) node).setMinSize(200, 70);
                 ((Button) node).setFont(new Font(20));
 //                node.setStyle(value);
                 node.setOnMouseEntered(e->{
@@ -116,12 +138,24 @@ public class MainScreen {
             }
     }
 
-    private void volver() {
-        LoadingScreen m= new LoadingScreen();
-        Scene s= new Scene(m.getroot(), 800, 500);
-        Stage st=(Stage)root.getScene().getWindow();
+    private void volver(){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            
+            alert.setTitle("PRECAUCION");
+            alert.setHeaderText("");
+            alert.setContentText("¿DeseaS salir?\n Perderas el presente documento!");
+            alert.showAndWait();
+            if (alert.getResult()== ButtonType.OK) {
+                LoadingScreen m= new LoadingScreen();
+                 Scene s= new Scene(m.getroot(), 850, 550);
+                Stage st=(Stage)root.getScene().getWindow();
        
-        st.setScene(s);
+                st.setScene(s);
+            }
+            else{
+                
+            }
+        
     }
     public void leerexcel(){
         List celldata= new ArrayList();

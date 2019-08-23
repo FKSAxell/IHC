@@ -7,6 +7,7 @@ package proyihc;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -19,12 +20,17 @@ public class MindStorm extends Application {
     @Override
     public void start(Stage st) {
         LoadingScreen l= new LoadingScreen();
-        Scene scene = new Scene(l.getroot(), 800, 500);
+        Scene scene = new Scene(l.getroot(), 800, 550);
         st.setTitle("MindStorm");
+         try {
+            st.getIcons().add(new Image(this.getClass().getResource("/img/fondo.png").toString()));
+        } catch (Exception e) {
+             System.err.println(e.getMessage());
+        }
         st.setScene(scene);
+       
         
-        
-//        st.setOpacity(0.94);
+        st.setOpacity(0.96);
         st.show();
     }
 

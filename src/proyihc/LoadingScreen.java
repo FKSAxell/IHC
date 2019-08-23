@@ -12,6 +12,7 @@ import java.util.Scanner;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
@@ -51,7 +52,8 @@ public class LoadingScreen {
         b=new Button("Cargar Archivo");
         fc= new FileChooser();
         fc.setInitialDirectory(new File(System.getProperty("user.home")));
-        l= new Label("¡Arrastra el Archivo!");
+        l= new Label("");
+        //¡Arrastra el Archivo!
         l.setFont(new Font("Showcard Gothic", 10));
         try {
             BackgroundImage myBI= new BackgroundImage(new Image("img/3.png",true),
@@ -62,19 +64,23 @@ public class LoadingScreen {
             root.setBackground(new Background(new BackgroundFill(Color.DARKTURQUOISE, CornerRadii.EMPTY, Insets.EMPTY)));
         }
         
-        root.setPadding(new Insets(400, 300, 50, 300));
+        root.setPadding(new Insets(400, 300, 50, 340));
         root.getChildren().addAll(b,l);
         l.setOnMouseEntered(e-> l.setEffect(new DropShadow(10, Color.BLUE)));
         l.setOnMouseExited(e-> l.setEffect(null));
         b.setOnAction(e->{
             f=(File)fc.showOpenDialog(root.getScene().getWindow());
-            if(f!=null){
+            if(f.getName().contains(".xlsx")){
                 CambiarVentana();
+            }else{
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("¡Solo puedes abrir archivos de Excel!");
+                a.showAndWait();
             }
             
             
         });
-        //drag();
+        drag();
         
     }
     
