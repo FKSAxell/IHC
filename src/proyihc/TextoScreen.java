@@ -5,6 +5,7 @@
  */
 package proyihc;
 
+import MODEL.Version;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,6 +14,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -128,59 +131,48 @@ public class TextoScreen {
         st.setScene(s);
     }
     public void leerexcel(){
-        List celldata= new ArrayList();
-        List Celdat=new ArrayList();
+        ArrayList versiones=new ArrayList();
         try {
             FileInputStream fis= new FileInputStream(f);
             XSSFWorkbook wb= new XSSFWorkbook(fis);
             XSSFSheet sheet= wb.getSheetAt(0);
             Iterator rowit= sheet.rowIterator();
+            //DOS PRIMERAS NO USAR
+            rowit.next();
+            rowit.next();
             while (rowit.hasNext()) {
                 XSSFRow row =(XSSFRow) rowit.next();
-                Iterator column= row.cellIterator();
-                while (column.hasNext()) {
-                    XSSFCell celda = (XSSFCell)column.next();
-                    Celdat.add(celda);
+                String cambios="";
+                String versionA="";
+                if(row.getCell(3)!=null){
+                    cambios=row.getCell(3).toString();
                 }
-                celldata.add(Celdat);
-            
+                if(row.getCell(4)!=null){
+                    versionA=row.getCell(4).toString();
+                }
+                versiones.add(new Version(row.getCell(1).toString(), row.getCell(0).toString(), row.getCell(2).toString()
+                        , cambios,versionA));
             }
         } catch (Exception e) {
         }
-        obtener(celldata);
+        obtener(versiones);
     }
-    public void obtener(List CellDataList){
-        List fila=new ArrayList();
-        List fin=new ArrayList() ;
-        System.out.println(CellDataList.size());
-        
-        for (i=3; i < 7; i++) {
-            Button b= new Button("Version "+(i-3));
+    public void obtener(ArrayList versiones){
+        for (i=0; i < versiones.size(); i++) {
+            Button b= new Button("Version "+((Version)versiones.get(i)).getNo());
             v1.getChildren().add(b);
-            b.setOnAction(e->{
-                textoori=text.getText();
-                var=var-50;
-                text.setText(textoori.substring(0,var));
-            });
+            b.setOnAction(new botonEvent((Version) versiones.get(i)));
         }
-        for (int i = 0; i < CellDataList.size(); i++) {
-            fila= (List) CellDataList.get(i);
-            l.setText(fila.get(0).toString());
-            System.out.println("<<<<<<"+fila.get(3));
-            fin=(List) CellDataList.get(6);
-            
-            for (int j = 0; j < fila.size(); j++) {
-                XSSFCell celda=(XSSFCell) fila.get(j);
-//                System.out.println(celda.toString()+"\n");
-//                String valorcelda= celda.toString();
-//                text.setText(text.getText()+"\n"+valorcelda);
-            }
-        }
-        XSSFCell celda=(XSSFCell) fila.get(fin.size()-1);
-        text.setText(l.getText()+""+text.getText()+"\n\n"+Jsoup.parse(celda.toString()).wholeText());
-//        
-//        text.setText(l.getText()+""+text.getText()+"\n"+celda.toString());
-        System.out.println(celda.toString());
-        
     }
+    
+    private class botonEvent implements EventHandler<ActionEvent> {
+        Version v=new Version();
+        public botonEvent(Version v){
+            this.v=v;
+        }
+        public void handle(ActionEvent ke) {
+            text.setText(Jsoup.parse(v.getVersionA()).wholeText());
+        }
+    }
+    
 }
