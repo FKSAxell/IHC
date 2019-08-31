@@ -40,6 +40,8 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
+import java.awt.*;
+
 
 /**
  *
@@ -55,6 +57,7 @@ public class TextoScreen {
     int var=200;
     static int i=0;
     String textoori;
+    
     public TextoScreen(File f){
         this.f=f;
         
@@ -171,7 +174,9 @@ public class TextoScreen {
             this.v=v;
         }
         public void handle(ActionEvent ke) {
+
             text.setText(Jsoup.parse(v.getVersionA()).wholeText());
+           
         }
     }
     

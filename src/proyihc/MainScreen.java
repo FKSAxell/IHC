@@ -81,7 +81,8 @@ public class MainScreen {
         v.getChildren().addAll(texto,graficos,anexos,volver);
         root.getChildren().addAll(h,v);
         texto.setOnAction(e->vertexto());
-        graficos.setOnAction(e->{
+        graficos.setOnAction(e->verGraficos());
+        /*graficos.setOnAction(e->{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             
         alert.setTitle("VER GRAFICOS");
@@ -90,7 +91,7 @@ public class MainScreen {
         
  
         alert.showAndWait();
-        });
+        });*/
         anexos.setOnAction(e->{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             
@@ -143,7 +144,7 @@ public class MainScreen {
             
             alert.setTitle("PRECAUCION");
             alert.setHeaderText("");
-            alert.setContentText("¿DeseaS salir?\n Perderas el presente documento!");
+            alert.setContentText("¿Deseas salir?\n Perderas el presente documento!");
             alert.showAndWait();
             if (alert.getResult()== ButtonType.OK) {
                 LoadingScreen m= new LoadingScreen();
@@ -200,5 +201,14 @@ public class MainScreen {
         Stage st=(Stage)root.getScene().getWindow();
        
         st.setScene(s);
+    }
+    
+    private void verGraficos(){
+        GaleriaScreen m= new GaleriaScreen(f);
+        Scene s= new Scene(m.getroot(), 800, 500);
+        Stage st=(Stage)root.getScene().getWindow();
+       
+        st.setScene(s);
+        
     }
 }
