@@ -64,12 +64,12 @@ public class TextoScreen {
     TextArea text;
     int var=200;
     static int i=0;
-    String textoori;
+    String nombrepag;
     DatosExcel datosE;
     
-    public TextoScreen(File f){
+    public TextoScreen(File f,String nombrepag){
         this.f=f;
-        
+        this.nombrepag=nombrepag;
         InicializarComponentes();
         Diseño();
         obtener(datosE.leerexcel());
@@ -79,10 +79,11 @@ public class TextoScreen {
     }
     public void InicializarComponentes(){
         root= new VBox(05);
-        l= new Label();
+        l= new Label(nombrepag);
+        
         l.setFont(new Font(20));
         text= new TextArea();
-        text.setMinSize(600, 300);
+        text.setMinSize(670, 360);
         text.setEditable(false);
         text.setWrapText(true);
         volver = new Button("Volver");
@@ -95,16 +96,18 @@ public class TextoScreen {
         im.setFitWidth(70);
         im.setFitHeight(70);
         h.getChildren().addAll(l);
-        h1= new HBox();
-        v1= new VBox(10);
+        h1= new HBox(5);
+        v1= new VBox(5);
+        v1.setPadding(new Insets(5, 0, 10, 0));
         menuBotones = new ScrollPane();
+        menuBotones.setStyle("-fx-background-color: transparent");
         menuBotones.autosize();
         menuBotones.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         menuBotones.setContent(v1);
         v= new VBox(10);
-        v.setPadding(new Insets(20, 50, 50, 50));
+        v.setPadding(new Insets(10, 20, 05, 10));
         v.getChildren().addAll(text,volver);
-        h1.getChildren().addAll(menuBotones,v);
+        h1.getChildren().addAll(v,menuBotones);
         root.getChildren().addAll(h,h1);
         volver.setOnAction(e-> volver());
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -113,12 +116,12 @@ public class TextoScreen {
         ObservableList<Node> o=v.getChildren();
         for (Node node : o) {
             if(node instanceof Button){
-                ((Button) node).setMinSize(150, 60);
+                ((Button) node).setMinSize(80, 20);
                 ((Button) node).setFont(new Font(20));
 //                node.setStyle(value);
                 node.setOnMouseEntered(e->{
                     
-                    ((Button) node).setFont(new Font(25));
+                    ((Button) node).setFont(new Font(22));
                     ((Button) node).setEffect(new Glow(0.5));
                 });
                 node.setOnMouseExited(e->{
