@@ -12,8 +12,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,6 +23,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,6 +34,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -54,7 +58,7 @@ public class GaleriaScreen {
     GridPane  root;
     HBox hBotones;
     File f;
-    PieChart pie;
+    PieChart piePalabras, pieAportaciones;
     ArrayList<Estudiante> estudiantes;
     DatosExcel datosE;
     ArrayList<Version> versiones;
@@ -69,6 +73,7 @@ public class GaleriaScreen {
         estudiantes = new ArrayList<>();
         estudiantesRepetidos();
         listaEstudiantes();
+        aporteEstudiantes();
         InicializarComponentes();
         
     }
@@ -77,31 +82,33 @@ public class GaleriaScreen {
     }
     
     public void InicializarComponentes(){
-        cantPal= new Button("Cantidad de Palabras");
+        /*cantPal= new Button("Cantidad de Palabras");
         cantApo= new Button("Cantidad de Aportaciones");
-        cantAne= new Button("Cantidad de Anexos");
+        cantAne= new Button("Cantidad de Anexos");*/
         volver= new Button("Volver");
         root = new GridPane(); 
         hBotones= new HBox();
         volver.setOnAction(e-> volver());
-        cantPal.setOnAction(e->insertar("Cantidad de Palabras"));
+        /*cantPal.setOnAction(e->insertar("Cantidad de Palabras"));
         cantApo.setOnAction(e->insertar("Cantidad de Aportaciones"));
-        cantAne.setOnAction(e->insertar("Cantidad de Anexos"));
+        cantAne.setOnAction(e->insertar("Cantidad de Anexos"));*/
         //root.setMinSize(400, 200); 
         root.setPadding(new Insets(10, 10, 10, 10)); 
         root.setVgap(5); 
         root.setHgap(5);
         root.setAlignment(Pos.CENTER);
-        hBotones.getChildren().addAll(cantPal,cantApo,cantAne);
+        //hBotones.getChildren().addAll(cantPal,cantApo,cantAne);
         hBotones.setAlignment(Pos.CENTER);
         root.add(hBotones,1,0);
         root.add(volver,0,5);
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-        pie=createPieChart("Cantidad de Aportaciones");
-        root.add(pie, 1, 3);
+        piePalabras = createPiePalabras("Cantidad de Palabras");
+        pieAportaciones = createPieAportaciones("Cantidad de Aportaciones");
+        root.add(piePalabras, 1, 3);
+        root.add(pieAportaciones, 3, 3);
        
     }
-    public PieChart createPieChart(String titulo) {
+    public PieChart createPiePalabras(String titulo) {
         for(Estudiante e: estudiantes){
             System.out.println(e.getNombre());
         }
@@ -110,9 +117,24 @@ public class GaleriaScreen {
         for(Estudiante e: contadorPalabras()){
             data.addAll(new PieChart.Data(e.getNombre(), e.getPalabras()));
         }
-            pie.setData(data);
-            pie.setTitle(titulo);
-            return pie;
+        pie.setData(data);
+        pie.setTitle(titulo);
+        pie.setLabelLineLength(5);
+        pie.setLegendSide(Side.BOTTOM);
+        return pie;
+    }
+    
+    public PieChart createPieAportaciones(String titulo){
+        PieChart pie = new PieChart();
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        for (Map.Entry<String, Integer> estudiante : aporteEstudiantes().entrySet()){
+            data.addAll(new PieChart.Data(estudiante.getKey(), estudiante.getValue()));
+        }
+        pie.setData(data);
+        pie.setTitle(titulo);
+        pie.setLabelLineLength(5);
+        pie.setLegendSide(Side.BOTTOM);
+        return pie;
     }
     
     private void volver() {
@@ -121,13 +143,6 @@ public class GaleriaScreen {
         Stage st=(Stage)root.getScene().getWindow();
        
         st.setScene(s);
-    }
-    
-    private void insertar(String titulo) {
-        root.getChildren().remove(pie);
-        pie=createPieChart(titulo);
-        root.add(pie, 1, 3);
-       
     }
     
     public ArrayList<Estudiante> contadorPalabras(){
@@ -192,6 +207,27 @@ public class GaleriaScreen {
             estudiantesRepetidos.add(v.getResponsable());
         }
         return estudiantesRepetidos;
+    }
+    
+    public Map<String, Integer> aporteEstudiantes(){
+        System.out.println("Hole");
+        Map<String, Integer> mapa = new HashMap();
+        for(Version v: versiones){
+            if(mapa.containsKey(v.getResponsable())){
+                int contador = mapa.get(v.getResponsable());
+                mapa.put(v.getResponsable(), contador+1);
+                
+            }else{
+                mapa.put(v.getResponsable(), 1);
+            }
+        }
+        
+        for (Map.Entry<String, Integer> estudiante : mapa.entrySet()){
+            String clave = estudiante.getKey();
+            Integer valor = estudiante.getValue();
+            System.out.println(clave+"  ->  "+valor);
+        }
+        return mapa;
     }
     
 }
