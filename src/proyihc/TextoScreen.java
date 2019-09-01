@@ -5,14 +5,21 @@
  */
 package proyihc;
 
+import MODEL.Estudiante;
 import MODEL.Version;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,6 +29,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.Glow;
@@ -40,7 +48,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
-import java.awt.*;
 
 
 /**
@@ -53,17 +60,19 @@ public class TextoScreen {
     Button volver;
     VBox root,v,v1;
     HBox h1;
+    ScrollPane menuBotones;
     TextArea text;
     int var=200;
     static int i=0;
     String textoori;
+    DatosExcel datosE;
     
     public TextoScreen(File f){
         this.f=f;
         
         InicializarComponentes();
         Diseño();
-        leerexcel();
+        obtener(datosE.leerexcel());
     }
     public Parent getroot(){
         return root;
@@ -76,7 +85,9 @@ public class TextoScreen {
         text.setMinSize(600, 300);
         text.setEditable(false);
         text.setWrapText(true);
-        volver= new Button("Volver");
+        volver = new Button("Volver");
+        datosE = new DatosExcel(f);
+        
         HBox h= new HBox(20);
         h.setPadding(new Insets(40, 50, 0, 80));
         ImageView im= new ImageView(new Image("img/logo.png"));
@@ -86,10 +97,14 @@ public class TextoScreen {
         h.getChildren().addAll(l);
         h1= new HBox();
         v1= new VBox(10);
+        menuBotones = new ScrollPane();
+        menuBotones.autosize();
+        menuBotones.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        menuBotones.setContent(v1);
         v= new VBox(10);
         v.setPadding(new Insets(20, 50, 50, 50));
         v.getChildren().addAll(text,volver);
-        h1.getChildren().addAll(v1,v);
+        h1.getChildren().addAll(menuBotones,v);
         root.getChildren().addAll(h,h1);
         volver.setOnAction(e-> volver());
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
@@ -113,17 +128,13 @@ public class TextoScreen {
             }
         }
     }
-    public void leerarchivo(File f){
-        if(!f.exists()) System.out.println("No existe el directorio");
-        try {
-            Scanner sc=new Scanner(f);
-            String buf;
-            while (sc.hasNext()) {
-                buf=sc.nextLine();
-                System.out.println(buf);
+    
+    public void obtener(ArrayList<Version> versiones){
+        for (i=0; i < versiones.size(); i++) {
+            Button b= new Button("Version "+((Version)versiones.get(i)).getNo());
+            v1.getChildren().add(b);
+            b.setOnAction(new TextoScreen.botonEvent((Version) versiones.get(i)));
         }
-        }catch(IOException e){        System.out.println("No se pudo leer el archivos");
-            }
     }
 
     private void volver() {
@@ -133,40 +144,6 @@ public class TextoScreen {
        
         st.setScene(s);
     }
-    public void leerexcel(){
-        ArrayList versiones=new ArrayList();
-        try {
-            FileInputStream fis= new FileInputStream(f);
-            XSSFWorkbook wb= new XSSFWorkbook(fis);
-            XSSFSheet sheet= wb.getSheetAt(0);
-            Iterator rowit= sheet.rowIterator();
-            //DOS PRIMERAS NO USAR
-            rowit.next();
-            rowit.next();
-            while (rowit.hasNext()) {
-                XSSFRow row =(XSSFRow) rowit.next();
-                String cambios="";
-                String versionA="";
-                if(row.getCell(3)!=null){
-                    cambios=row.getCell(3).toString();
-                }
-                if(row.getCell(4)!=null){
-                    versionA=row.getCell(4).toString();
-                }
-                versiones.add(new Version(row.getCell(1).toString(), row.getCell(0).toString(), row.getCell(2).toString()
-                        , cambios,versionA));
-            }
-        } catch (Exception e) {
-        }
-        obtener(versiones);
-    }
-    public void obtener(ArrayList versiones){
-        for (i=0; i < versiones.size(); i++) {
-            Button b= new Button("Version "+((Version)versiones.get(i)).getNo());
-            v1.getChildren().add(b);
-            b.setOnAction(new botonEvent((Version) versiones.get(i)));
-        }
-    }
     
     private class botonEvent implements EventHandler<ActionEvent> {
         Version v=new Version();
@@ -174,10 +151,9 @@ public class TextoScreen {
             this.v=v;
         }
         public void handle(ActionEvent ke) {
-
+            //Eliminar etiquetas html
             text.setText(Jsoup.parse(v.getVersionA()).wholeText());
            
         }
     }
-    
 }

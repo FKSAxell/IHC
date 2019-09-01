@@ -15,6 +15,7 @@ public class Version {
     private String fecha;
     private String cambios;
     private String versionA;
+    private int tamañoVersion;
 
     public Version() {
     }
@@ -68,9 +69,17 @@ public class Version {
         this.versionA = versionA;
     }
 
+    public int getTamañoVersion() {
+        return getVersionA().split(" ").length;
+    }
+
+    public void setTamañoVersion(int tamañoVersion) {
+        this.tamañoVersion = tamañoVersion;
+    }
+
     @Override
     public String toString() {
-        return "Version{" + "no=" + no + ", responsable=" + responsable + ", fecha=" + fecha + ", cambios=" + cambios + ", versionA=" + versionA + '}';
+        return "Version{" + "no=" + no + ", responsable=" + responsable + ", fecha=" + fecha +"Cambios. "+ cambios + ", versionA=" + versionA + '}'+"\n";
     }
     
     

@@ -5,9 +5,20 @@
  */
 package proyihc;
 
+import MODEL.Estudiante;
+import MODEL.Version;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -29,6 +40,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.jsoup.Jsoup;
 
 /**
  *
@@ -40,10 +55,22 @@ public class GaleriaScreen {
     HBox hBotones;
     File f;
     PieChart pie;
+    ArrayList<Estudiante> estudiantes;
+    DatosExcel datosE;
+    ArrayList<Version> versiones;
+    ArrayList<String> estudiantesRepetidos;
+    
 
-    public GaleriaScreen(File f) {
+    public GaleriaScreen(File f){
         this.f=f;
+        datosE = new DatosExcel(f);
+        versiones = datosE.leerexcel();
+        estudiantesRepetidos = new ArrayList<>();
+        estudiantes = new ArrayList<>();
+        estudiantesRepetidos();
+        listaEstudiantes();
         InicializarComponentes();
+        
     }
     public Parent getroot(){
         return root;
@@ -75,18 +102,19 @@ public class GaleriaScreen {
        
     }
     public PieChart createPieChart(String titulo) {
-      PieChart pie = new PieChart();
-      ObservableList<PieChart.Data> data =
-         FXCollections.observableArrayList();
-        data.addAll(new PieChart.Data("Axell Concha", 30.0),
-         new PieChart.Data("Jordy Medina", 20.3),
-         new PieChart.Data("Axel Auza", 16.3),
-         new PieChart.Data("Leonardo Gomez", 12.0));
-
-      pie.setData(data);
-      pie.setTitle(titulo);
-      return pie;
+        for(Estudiante e: estudiantes){
+            System.out.println(e.getNombre());
+        }
+        PieChart pie = new PieChart();
+        ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
+        for(Estudiante e: contadorPalabras()){
+            data.addAll(new PieChart.Data(e.getNombre(), e.getPalabras()));
+        }
+            pie.setData(data);
+            pie.setTitle(titulo);
+            return pie;
     }
+    
     private void volver() {
         MainScreen m= new MainScreen(f);
         Scene s= new Scene(m.getroot(), 800, 500);
@@ -94,12 +122,76 @@ public class GaleriaScreen {
        
         st.setScene(s);
     }
+    
     private void insertar(String titulo) {
         root.getChildren().remove(pie);
         pie=createPieChart(titulo);
         root.add(pie, 1, 3);
        
     }
-   
+    
+    public ArrayList<Estudiante> contadorPalabras(){
+        boolean controlador = true;
+        int contadorInicio = 0;
+        int contadorFin = 0;
+        int eliminado = 0;
+        //Collections.reverse(versiones);
+        //Collections.sort(versiones, (Version v2, Version v3) -> new Integer(v2.getTamañoVersion()).compareTo(new Integer(v3.getTamañoVersion())));
+        for(Version v: versiones){
+            String[] split = v.getVersionA().split(" ");
+            if(controlador){
+                contadorInicio = split.length;
+                controlador = false;
+            }else{
+                contadorFin = split.length;
+                for(Estudiante e: estudiantes){
+                    if(v.getResponsable().equals(e.getNombre())){
+                        int palabras = e.getPalabras();
+                        if((contadorFin-contadorInicio) < 0){
+                            e.setPalabras(palabras);
+                            eliminado += contadorInicio-contadorFin;
+                        }
+                        else{
+                            e.setPalabras((contadorFin-contadorInicio)+palabras);
+                        }
+                    }
+                }
+                //System.out.println("Persona: "+v.getResponsable()+" Palabras "+split.length);
+                //System.out.println("Persona: "+v.getResponsable()+" ingreso "+(contadorFin-contadorInicio));
+                contadorInicio = contadorFin;
+            }
+        }
+        
+        //Caso de estudiante retirado
+        for(Estudiante e: estudiantes){
+            if(e.getNombre().equals("KLEBER JONNATHAN PUMA ZARUMA")){
+                e.setPalabras(e.getPalabras()-eliminado);
+            }
+            System.out.println("Estudiante:"+e.getNombre()+" Palabras:"+e.getPalabras());
+        }
+        return estudiantes;
+    }
+    
+    public ArrayList<Estudiante> listaEstudiantes(){
+        limpiarListaEstudiantes(estudiantesRepetidos());
+        for(String estudiante: estudiantesRepetidos){
+            estudiantes.add(new Estudiante(estudiante));
+        }
+        return estudiantes;
+    }
+    
+    public void limpiarListaEstudiantes(ArrayList<String> lista){
+        Set<String> hs = new HashSet<>();
+        hs.addAll(lista);
+        lista.clear();
+        lista.addAll(hs);
+    }
+    
+    public ArrayList<String> estudiantesRepetidos(){
+        for(Version v: versiones){
+            estudiantesRepetidos.add(v.getResponsable());
+        }
+        return estudiantesRepetidos;
+    }
     
 }
