@@ -11,12 +11,15 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,6 +33,8 @@ import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -119,20 +124,33 @@ public class GaleriaScreen {
         }
         pie.setData(data);
         pie.setTitle(titulo);
-        pie.setLabelLineLength(5);
+        pie.setLabelsVisible(false);
+        data.forEach(datos ->
+                datos.nameProperty().bind(
+                        Bindings.concat(datos.getName()+" ingresó "+datos.getPieValue()+" palabras")
+                )
+        );
         pie.setLegendSide(Side.BOTTOM);
         return pie;
     }
     
     public PieChart createPieAportaciones(String titulo){
+        TableView table = new TableView();
         PieChart pie = new PieChart();
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
         for (Map.Entry<String, Integer> estudiante : aporteEstudiantes().entrySet()){
             data.addAll(new PieChart.Data(estudiante.getKey(), estudiante.getValue()));
         }
+        
         pie.setData(data);
+        pie.setLabelsVisible(false);
         pie.setTitle(titulo);
-        pie.setLabelLineLength(5);
+        data.forEach(datos ->
+                datos.nameProperty().bind(
+                        Bindings.concat(datos.getName()+" realizó "+datos.getPieValue()+" aportaciones")
+                )
+        );
+        
         pie.setLegendSide(Side.BOTTOM);
         return pie;
     }
@@ -182,7 +200,7 @@ public class GaleriaScreen {
             if(e.getNombre().equals("KLEBER JONNATHAN PUMA ZARUMA")){
                 e.setPalabras(e.getPalabras()-eliminado);
             }
-            System.out.println("Estudiante:"+e.getNombre()+" Palabras:"+e.getPalabras());
+            //System.out.println("Estudiante:"+e.getNombre()+" Palabras:"+e.getPalabras());
         }
         return estudiantes;
     }
@@ -210,7 +228,6 @@ public class GaleriaScreen {
     }
     
     public Map<String, Integer> aporteEstudiantes(){
-        System.out.println("Hole");
         Map<String, Integer> mapa = new HashMap();
         for(Version v: versiones){
             if(mapa.containsKey(v.getResponsable())){
@@ -225,7 +242,7 @@ public class GaleriaScreen {
         for (Map.Entry<String, Integer> estudiante : mapa.entrySet()){
             String clave = estudiante.getKey();
             Integer valor = estudiante.getValue();
-            System.out.println(clave+"  ->  "+valor);
+            //System.out.println(clave+"  ->  "+valor);
         }
         return mapa;
     }
