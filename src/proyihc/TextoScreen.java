@@ -45,9 +45,9 @@ import org.jsoup.Jsoup;
 public class TextoScreen {
     Label l,caption;
     File f;
-    Button volver;
+    Button volver,info;
     VBox root,v,v1;
-    HBox h1;
+    HBox h1,menuaba;
     ScrollPane menuBotones,scrtext;
     TextArea text;
     TextFlow textt;
@@ -74,7 +74,7 @@ public class TextoScreen {
         caption=new Label();
         l.setFont(new Font(20));
         t=new Text();
-        t.setWrappingWidth(300);
+        t.setWrappingWidth(200);
         textt= new TextFlow();
         textt.getChildren().addListener(
                 (ListChangeListener<Node>) ((change) -> {
@@ -92,7 +92,7 @@ public class TextoScreen {
         datosE = new DatosExcel(f);
         
         HBox h= new HBox(20);
-        h.setPadding(new Insets(40, 50, 0, 80));
+        h.setPadding(new Insets(10, 20, 0, 20));
         ImageView im= new ImageView(new Image("img/logo.png"));
         im.setOpacity(0.94);
         im.setFitWidth(70);
@@ -103,7 +103,7 @@ public class TextoScreen {
         v1.setPadding(new Insets(5, 0, 10, 0));
         
         scrtext= new ScrollPane();
-        scrtext.setMinSize(620, 360);
+        scrtext.setMinSize(620, 380);
         scrtext.setMaxSize(620, 360);
         scrtext.setStyle("-fx-background-color: transparent");
         scrtext.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
@@ -118,11 +118,24 @@ public class TextoScreen {
         menuBotones.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         menuBotones.setContent(v1);
         v= new VBox(10);
+        root.setOnMouseClicked(e->{
+            System.out.println(e.getX()+" "+ e.getY());
+        });
+        menuaba= new HBox(200);
+        info= new Button("Ver Info");
+        info.setDisable(true);
+        menuaba.getChildren().addAll(volver,info);
         v.setPadding(new Insets(10, 20, 05, 10));
         
 //        v.getChildren().addAll(text,volver);
         
-        v.getChildren().addAll(scrtext,volver);
+        v.getChildren().addAll(menuaba,scrtext);
+        scrtext.setOnMouseEntered(e->{
+            info.setEffect(new Glow(05));
+        });
+        scrtext.setOnMouseExited(e->{
+            info.setEffect(null);
+        });
         
         h1.getChildren().addAll(v,menuBotones);
         root.getChildren().addAll(h,h1);
@@ -131,7 +144,7 @@ public class TextoScreen {
     
     }
     public void Diseño(){
-        ObservableList<Node> o=v1.getChildren();
+        ObservableList<Node> o=menuaba.getChildren();
         for (Node node : o) {
             if(node instanceof Button){
                 ((Button) node).setMinSize(80, 20);
@@ -158,8 +171,8 @@ public class TextoScreen {
             if(node instanceof Button){
                 ((Button) node).setMinSize(80, 20);
                 ((Button) node).setFont(new Font(20));
-                ((Button) node).setTextFill(Color.WHITE);
-                ((Button) node).setStyle("-fx-background-color: #483D8B");
+//                ((Button) node).setTextFill(Color.WHITE);
+//                ((Button) node).setStyle("-fx-background-color: #483D8B");
 //                node.setStyle(value);
                 node.setOnMouseEntered(e->{
                     
@@ -178,10 +191,11 @@ public class TextoScreen {
             String ver=((Version)versiones.get(i)).getNo();
 //          Button b= new Button("Version "+ver.substring(0, ver.length()-2));
             Button b= new Button(((Version)versiones.get(i)).getFecha());
-            b.setTextFill(Color.WHITE);
-            b.setStyle("-fx-background-color: #483D8B");
+//            b.setTextFill(Color.WHITE);
+//            b.setStyle("-fx-background-color: #483D8B");
             b.setOpacity(0.95);
             v1.getChildren().add(b);
+            v1.setStyle("-fx-background-color: transparent");
             b.setOnAction(new TextoScreen.botonEvent((Version) versiones.get(i)));
             
         }
@@ -221,11 +235,27 @@ private synchronized void append(String msg, String style) {
         }
         public void handle(ActionEvent ke) {
             //Eliminar etiquetas html
-            l.setText(nombrepag+"\t- "+v.getResponsable());
+            l.setText(nombrepag+"\t"+v.getResponsable());
 //            t.setText(Jsoup.parse(v.getVersionA()).wholeText());
             append(Jsoup.parse(v.getVersionA()).wholeText(),"");
             text.appendText(Jsoup.parse(v.getVersionA()).wholeText());
+            
+            
+            info.setDisable(false);
+            info.setOnMouseClicked(e->{
+                MostrarInfo(v);
+            });
+            
+            
            
         }
+    }
+    public void MostrarInfo(Version v){
+        InfoReporte i= new InfoReporte(v);
+        Stage st=new Stage();
+        Scene s=new Scene(i.getroot(),600, 200);
+        st.setTitle(nombrepag);
+        st.setScene(s);
+        st.showAndWait();
     }
 }

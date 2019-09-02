@@ -8,15 +8,9 @@ package proyihc;
 import MODEL.Estudiante;
 import MODEL.Version;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -24,37 +18,26 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.effect.Glow;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.jsoup.Jsoup;
+import javax.swing.ToolTipManager;
 
 /**
  *
@@ -94,6 +77,8 @@ public class GaleriaScreen {
         cantApo= new Button("Cantidad de Aportaciones");
         cantAne= new Button("Cantidad de Anexos");*/
         volver= new Button("Volver");
+        volver.setTextFill(Color.WHITE);
+        volver.setStyle("-fx-background-color: #483D8B");
         root = new GridPane(); 
         hBotones= new HBox();
         volver.setOnAction(e-> volver());
@@ -117,6 +102,10 @@ public class GaleriaScreen {
         root.add(piePalabras, 1, 3);
         root.add(pieAportaciones, 3, 3);
         root.add(caption,1,0);
+        Tooltip tool=new Tooltip("Da clic en el grafico para ver el porcentaje!");
+        ToolTipManager.sharedInstance().setInitialDelay(10);
+        tool.setFont(Font.font(15));
+        Tooltip.install(root, tool);
     }
     public PieChart createPiePalabras(String titulo) {
         for(Estudiante e: estudiantes){
@@ -138,7 +127,7 @@ public class GaleriaScreen {
         DoubleBinding total = Bindings.createDoubleBinding(() ->
         data.stream().collect(Collectors.summingDouble(PieChart.Data::getPieValue)), data);
         for (final PieChart.Data data1 : pie.getData()) {
-        data1.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
+        data1.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
             e -> {
                 caption.setTranslateX(e.getSceneX()-10);
                 caption.setTranslateY(e.getSceneY()-10);
