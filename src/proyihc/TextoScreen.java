@@ -55,7 +55,7 @@ import org.jsoup.Jsoup;
  * @author medin
  */
 public class TextoScreen {
-    Label l;
+    Label l,caption;
     File f;
     Button volver;
     VBox root,v,v1;
@@ -80,10 +80,10 @@ public class TextoScreen {
     public void InicializarComponentes(){
         root= new VBox(05);
         l= new Label(nombrepag);
-        
+        caption=new Label();
         l.setFont(new Font(20));
         text= new TextArea();
-        text.setMinSize(670, 360);
+        text.setMinSize(620, 360);
         text.setEditable(false);
         text.setWrapText(true);
         volver = new Button("Volver");
@@ -113,11 +113,35 @@ public class TextoScreen {
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
     public void Diseño(){
+        ObservableList<Node> o=v1.getChildren();
+        for (Node node : o) {
+            if(node instanceof Button){
+                ((Button) node).setMinSize(80, 20);
+                ((Button) node).setFont(new Font(20));
+                ((Button) node).setTextFill(Color.WHITE);
+                ((Button) node).setStyle("-fx-background-color: #483D8B");
+//                node.setStyle(value);
+                node.setOnMouseEntered(e->{
+                    
+                    ((Button) node).setFont(new Font(22));
+                    ((Button) node).setEffect(new Glow(0.5));
+                });
+                node.setOnMouseExited(e->{
+                    ((Button) node).setFont(new Font(20));
+                    ((Button) node).setEffect(null);
+                });
+            }
+        }
+        
+    }
+    public void DiseñoVersiones(){
         ObservableList<Node> o=v.getChildren();
         for (Node node : o) {
             if(node instanceof Button){
                 ((Button) node).setMinSize(80, 20);
                 ((Button) node).setFont(new Font(20));
+                ((Button) node).setTextFill(Color.WHITE);
+                ((Button) node).setStyle("-fx-background-color: #483D8B");
 //                node.setStyle(value);
                 node.setOnMouseEntered(e->{
                     
@@ -131,13 +155,19 @@ public class TextoScreen {
             }
         }
     }
-    
     public void obtener(ArrayList<Version> versiones){
         for (i=0; i < versiones.size(); i++) {
-            Button b= new Button("Version "+((Version)versiones.get(i)).getNo());
+            String ver=((Version)versiones.get(i)).getNo();
+//          Button b= new Button("Version "+ver.substring(0, ver.length()-2));
+            Button b= new Button(((Version)versiones.get(i)).getFecha());
+            b.setTextFill(Color.WHITE);
+            b.setStyle("-fx-background-color: #483D8B");
+            b.setOpacity(0.95);
             v1.getChildren().add(b);
             b.setOnAction(new TextoScreen.botonEvent((Version) versiones.get(i)));
+            
         }
+        
     }
 
     private void volver() {
@@ -147,6 +177,8 @@ public class TextoScreen {
        
         st.setScene(s);
     }
+
+    
     
     private class botonEvent implements EventHandler<ActionEvent> {
         Version v=new Version();
@@ -155,6 +187,7 @@ public class TextoScreen {
         }
         public void handle(ActionEvent ke) {
             //Eliminar etiquetas html
+            l.setText(nombrepag+"\t- "+v.getResponsable());
             text.setText(Jsoup.parse(v.getVersionA()).wholeText());
            
         }
