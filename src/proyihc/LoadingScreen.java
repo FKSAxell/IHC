@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -88,6 +89,7 @@ public class LoadingScreen {
         
         root.setPadding(new Insets(400, 300, 50, 300));
         root.getChildren().addAll(b,l);
+      
         l.setOnMouseEntered(e-> l.setEffect(new DropShadow(10, Color.BLUE)));
         l.setOnMouseExited(e-> l.setEffect(null));
         b.setOnAction(e->{

@@ -170,7 +170,7 @@ class AnexoScreen {
         root.getChildren().remove(sp);
         hFotos= new HBox();
         sp= new ScrollPane();
-        titulo.setText("Anexos de"+est.getNombre());
+        titulo.setText("Anexos de "+est.getNombre());
         for (int i = 0; i<est.getUrls().size(); i++){
             Image image = new Image("File:./src/img/"+est.getNombre().split(" ")[2]+ Integer.toString(i)+".jpg");
             ImageView imageV= new ImageView(image);
