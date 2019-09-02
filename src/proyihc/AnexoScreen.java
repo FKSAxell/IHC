@@ -14,13 +14,16 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -47,7 +50,7 @@ class AnexoScreen {
     Button cantPal,cantApo,cantAne,volver;
     GridPane  root;
     HBox hBotones,usuarios,hFotos;
-   
+    Label titulo;
     File f;
     Label caption;
     PieChart piePalabras, pieAportaciones;
@@ -116,18 +119,36 @@ class AnexoScreen {
         hFotos= new HBox();
         usuarios = new HBox();
         root.add(hFotos, 1, 2);
-         
-        
+        titulo = new Label();
+        titulo.setFont(new Font(20));
+        int contUrl=0;
         for(Estudiante est: estudiantes){
             if(est.getUrls().size()>0){
                 estudianteB = new Button(est.getNombre());
                 estudianteB.setOnAction(e->colocarFotos(est));
                 usuarios.getChildren().addAll(estudianteB);
+                contUrl++;
                       
             }
             
         }
-        inicializarFotos();
+        if(contUrl ==0){
+            /* Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            
+            alert.setTitle("NO HAY ANEXOS");
+            alert.setHeaderText("");
+            alert.setContentText("No existen anexos en el presente documento");
+            
+
+
+            alert.showAndWait();*/
+            titulo.setText("No hay Anexos que mostrar");
+            
+            
+        }else{
+            inicializarFotos();
+        }
+        
         todo.setAlignment(Pos.CENTER);
         root.setAlignment(Pos.CENTER);
         //hBotones.getChildren().addAll(cantPal,cantApo,cantAne);
@@ -135,25 +156,26 @@ class AnexoScreen {
         root.add(hBotones,1,0);
         
         todo.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-        todo.getChildren().addAll(usuarios,root,volver);
+        todo.getChildren().addAll(titulo,usuarios,root,volver);
+        
 
     }
      private void volver() {
         MainScreen m= new MainScreen(f);
         Scene s= new Scene(m.getroot(), 800, 500);
-        Stage st=(Stage)root.getScene().getWindow();
-       
+        Stage st=(Stage)todo.getScene().getWindow();
         st.setScene(s);
     }
     private void colocarFotos(Estudiante est){
         root.getChildren().remove(sp);
         hFotos= new HBox();
         sp= new ScrollPane();
+        titulo.setText("Anexos de"+est.getNombre());
         for (int i = 0; i<est.getUrls().size(); i++){
             Image image = new Image("File:./src/img/"+est.getNombre().split(" ")[2]+ Integer.toString(i)+".jpg");
             ImageView imageV= new ImageView(image);
-            imageV.setFitHeight(200);
-            imageV.setFitWidth(200);
+             imageV.setFitHeight(250);
+             imageV.setFitWidth(300);
             
             hFotos.getChildren().add(imageV);      
         }
@@ -167,14 +189,15 @@ class AnexoScreen {
     private void inicializarFotos(){
         sp= new ScrollPane();
         hFotos= new HBox();
+        titulo.setText("Todos los Anexos");
         for (Estudiante est: estudiantes){
             String nombre= est.getNombre().split(" ")[2];
             int idFoto=0;
             for (int i = 0; i<est.getUrls().size(); i++){
                 Image image = new Image("File:./src/img/"+est.getNombre().split(" ")[2]+ Integer.toString(i)+".jpg");
                 ImageView imageV= new ImageView(image);
-                imageV.setFitHeight(200);
-                imageV.setFitWidth(200);
+                imageV.setFitHeight(250);
+                imageV.setFitWidth(300);
                 hFotos.getChildren().add(imageV);
                 
             }
