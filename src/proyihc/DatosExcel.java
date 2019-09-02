@@ -49,12 +49,14 @@ public class DatosExcel {
                 estudiantesRepetidos.add(row.getCell(0).toString());
                 if(row.getCell(3)!=null){
                     cambios=row.getCell(3).toString();
+                    
                 }
                 if(row.getCell(4)!=null){
                     versionA=row.getCell(4).toString();
                 }
                 versiones.add(new Version(row.getCell(1).toString(), row.getCell(0).toString(), row.getCell(2).toString()
-                        ,Jsoup.parse(cambios).wholeText(),Jsoup.parse(versionA).wholeText()));
+                        ,Jsoup.parse(cambios).wholeText(),Jsoup.parse(versionA).wholeText(),cambios));
+                
             }
             //listaEstudiantes();
             //recorrerVersiones();

@@ -17,15 +17,25 @@ public class Version {
     private String versionA;
     private int tamañoVersion;
 
+    public String getSinEditar() {
+        return sinEditar;
+    }
+
+    public void setSinEditar(String sinEditar) {
+        this.sinEditar = sinEditar;
+    }
+    private String sinEditar;
+
     public Version() {
     }
 
-    public Version(String no, String responsable, String fecha, String cambios, String versionA) {
+    public Version(String no, String responsable, String fecha, String cambios, String versionA, String sinEditar) {
         this.no = no;
         this.responsable = responsable;
         this.fecha = fecha;
         this.cambios = cambios;
         this.versionA = versionA;
+        this.sinEditar =sinEditar;
     }
     
 

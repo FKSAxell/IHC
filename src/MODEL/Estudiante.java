@@ -5,6 +5,7 @@
  */
 package MODEL;
 
+import java.util.ArrayList;
 import javafx.scene.paint.Color;
 
 /**
@@ -16,6 +17,15 @@ public class Estudiante{
     private int aportaciones;
     private int palabras;
     private int cantidadImagenes;
+    private ArrayList<String> urls;
+
+    public ArrayList<String> getUrls() {
+        return urls;
+    }
+
+    public void setUrls(ArrayList<String> urls) {
+        this.urls = urls;
+    }
     private Color color;
 
     public Estudiante(String nombre) {
@@ -23,6 +33,7 @@ public class Estudiante{
         this.aportaciones = 0;
         this.palabras = 0;
         this.cantidadImagenes = 0;
+        this.urls=new ArrayList<String>();
     }
 
     public String getNombre() {

@@ -82,6 +82,7 @@ public class MainScreen {
         root.getChildren().addAll(h,v);
         texto.setOnAction(e->vertexto());
         graficos.setOnAction(e->verGraficos());
+        anexos.setOnAction(e->verAnexo());
         /*graficos.setOnAction(e->{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             
@@ -92,7 +93,7 @@ public class MainScreen {
  
         alert.showAndWait();
         });*/
-        anexos.setOnAction(e->{
+        /*anexos.setOnAction(e->{
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             
         alert.setTitle("NO HAY ANEXOS");
@@ -102,7 +103,7 @@ public class MainScreen {
  
         alert.showAndWait();
        
-        });
+        });*/
         volver.setOnAction(e->volver());
         
         
@@ -207,6 +208,14 @@ public class MainScreen {
     
     private void verGraficos(){
         GaleriaScreen m= new GaleriaScreen(f);
+        Scene s= new Scene(m.getroot(), 800, 500);
+        Stage st=(Stage)root.getScene().getWindow();
+       
+        st.setScene(s);
+        
+    }
+    private void verAnexo(){
+        AnexoScreen m= new AnexoScreen(f);
         Scene s= new Scene(m.getroot(), 800, 500);
         Stage st=(Stage)root.getScene().getWindow();
        

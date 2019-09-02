@@ -3,12 +3,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/USER/Desktop/GIT/IHC/src/proyihc/DatosExcel.java</file>
-            <file>file:/C:/Users/USER/Desktop/GIT/IHC/src/MODEL/Estudiante.java</file>
-            <file>file:/C:/Users/USER/Desktop/GIT/IHC/src/proyihc/MainScreen.java</file>
-            <file>file:/C:/Users/USER/Desktop/GIT/IHC/src/proyihc/MindStorm.java</file>
-            <file>file:/C:/Users/USER/Desktop/GIT/IHC/src/proyihc/TextoScreen.java</file>
-            <file>file:/C:/Users/USER/Desktop/GIT/IHC/src/proyihc/GaleriaScreen.java</file>
+            <file>file:/C:/Users/kevin/Desktop/IHC/src/proyihc/TextoScreen.java</file>
+            <file>file:/C:/Users/kevin/Desktop/IHC/src/proyihc/DatosExcel.java</file>
+            <file>file:/C:/Users/kevin/Desktop/IHC/src/proyihc/GaleriaScreen.java</file>
+            <file>file:/C:/Users/kevin/Desktop/IHC/src/proyihc/InfoReporte.java</file>
+            <file>file:/C:/Users/kevin/Desktop/IHC/src/MODEL/Estudiante.java</file>
+            <file>file:/C:/Users/kevin/Desktop/IHC/src/proyihc/AnexoScreen.java</file>
+            <file>file:/C:/Users/kevin/Desktop/IHC/src/MODEL/Version.java</file>
+            <file>file:/C:/Users/kevin/Desktop/IHC/src/proyihc/MainScreen.java</file>
+            <file>file:/C:/Users/kevin/Desktop/IHC/src/proyihc/LoadingScreen.java</file>
         </group>
     </open-files>
 </project-private>
