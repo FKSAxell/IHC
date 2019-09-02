@@ -28,6 +28,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -79,6 +80,19 @@ public class GaleriaScreen {
         volver= new Button("Volver");
         volver.setTextFill(Color.WHITE);
         volver.setStyle("-fx-background-color: #483D8B");
+        volver.setTextFill(Color.WHITE);
+        volver.setFont(new Font(20));
+                volver.setStyle("-fx-background-color: #483D8B");
+//                node.setStyle(value);
+                volver.setOnMouseEntered(e->{
+                    
+                   
+                   volver.setEffect(new Glow(0.5));
+                });
+                volver.setOnMouseExited(e->{
+                    volver.setFont(new Font(20));
+                    volver.setEffect(null);
+                });
         root = new GridPane(); 
         hBotones= new HBox();
         volver.setOnAction(e-> volver());
@@ -103,7 +117,9 @@ public class GaleriaScreen {
         root.add(pieAportaciones, 3, 3);
         root.add(caption,1,0);
         Tooltip tool=new Tooltip("Da clic en el grafico para ver el porcentaje!");
-        ToolTipManager.sharedInstance().setInitialDelay(10);
+        
+        
+        ToolTipManager.sharedInstance().setInitialDelay(1);
         tool.setFont(Font.font(15));
         Tooltip.install(root, tool);
     }

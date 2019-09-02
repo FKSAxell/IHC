@@ -41,11 +41,12 @@ public class InfoReporte {
         root.add(new Label("Fecha:"), 0, 2);
         root.add(new Label("Aporte:"), 0, 3);
         root.add(lblNombre, 0, 0);
+        root.add(new Label("\t"+v.getCambios().trim().length()+" Palabras añadidas"),1,0);
         root.add(lblUsuario, 1, 1);
         root.add(lblFecha, 1, 2);
         root.add(Cambios, 1, 3);
-        lblUsuario.setText(v.getResponsable());
-        lblFecha.setText(v.getFecha());
+        lblUsuario.setText("\t"+v.getResponsable());
+        lblFecha.setText("\t"+v.getFecha());
         Cambios.setText(Jsoup.parse(v.getCambios()).wholeText());
     }
     public Parent getroot(){

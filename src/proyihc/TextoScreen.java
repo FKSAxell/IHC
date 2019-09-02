@@ -92,7 +92,7 @@ public class TextoScreen {
         datosE = new DatosExcel(f);
         
         HBox h= new HBox(20);
-        h.setPadding(new Insets(10, 20, 0, 20));
+        h.setPadding(new Insets(10, 20, 0, 10));
         ImageView im= new ImageView(new Image("img/logo.png"));
         im.setOpacity(0.94);
         im.setFitWidth(70);
@@ -147,14 +147,14 @@ public class TextoScreen {
         ObservableList<Node> o=menuaba.getChildren();
         for (Node node : o) {
             if(node instanceof Button){
-                ((Button) node).setMinSize(80, 20);
+                ((Button) node).setMaxSize(100, 05);
                 ((Button) node).setFont(new Font(20));
                 ((Button) node).setTextFill(Color.WHITE);
                 ((Button) node).setStyle("-fx-background-color: #483D8B");
 //                node.setStyle(value);
                 node.setOnMouseEntered(e->{
                     
-                    ((Button) node).setFont(new Font(22));
+                    ((Button) node).setFont(new Font(20));
                     ((Button) node).setEffect(new Glow(0.5));
                 });
                 node.setOnMouseExited(e->{

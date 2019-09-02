@@ -15,7 +15,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
@@ -33,6 +35,7 @@ import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javax.swing.ToolTipManager;
 
 /**
  *
@@ -49,7 +52,26 @@ public class LoadingScreen {
         return root;
     }
     public LoadingScreen(){
+        Tooltip to=new Tooltip("¡Carga un archivo!");
+        to.setFont(Font.font(20));
+        Tooltip.install(root, to);
+        Tooltip.install(b, to);
+        ToolTipManager.sharedInstance().setInitialDelay(0);
+        ToolTipManager.sharedInstance().setReshowDelay(1);
         b=new Button("Cargar Archivo");
+        b.setFont(new Font(20));
+        b.setTextFill(Color.WHITE);
+        b.setStyle("-fx-background-color: #483D8B");
+//                node.setStyle(value);
+        b.setOnMouseEntered(e->{
+                    
+            b.setFont(new Font(20));
+            b.setEffect(new Glow(0.5));
+                });
+            b.setOnMouseExited(e->{
+                b.setFont(new Font(20));
+                b.setEffect(null);
+                });
         fc= new FileChooser();
         fc.setInitialDirectory(new File(System.getProperty("user.home")));
         l= new Label("");
@@ -64,12 +86,13 @@ public class LoadingScreen {
             root.setBackground(new Background(new BackgroundFill(Color.DARKTURQUOISE, CornerRadii.EMPTY, Insets.EMPTY)));
         }
         
-        root.setPadding(new Insets(400, 300, 50, 340));
+        root.setPadding(new Insets(400, 300, 50, 300));
         root.getChildren().addAll(b,l);
         l.setOnMouseEntered(e-> l.setEffect(new DropShadow(10, Color.BLUE)));
         l.setOnMouseExited(e-> l.setEffect(null));
         b.setOnAction(e->{
             f=(File)fc.showOpenDialog(root.getScene().getWindow());
+            
             if(f.getName().contains(".xlsx")){
                 CambiarVentana();
             }else{

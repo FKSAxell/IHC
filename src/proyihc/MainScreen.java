@@ -186,7 +186,7 @@ public class MainScreen {
     public void obtener(List CellDataList){
         for (int i = 0; i < CellDataList.size(); i++) {
             List cellTempList= (List) CellDataList.get(i);
-            l.setText(cellTempList.get(0).toString());
+            l.setText("\t\t"+cellTempList.get(0).toString());
 //            System.out.println("<<<<<<"+cellTempList.get(i));
             for (int j = 0; j < cellTempList.size(); j++) {
                 XSSFCell celda=(XSSFCell) cellTempList.get(j);
