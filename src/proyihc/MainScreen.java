@@ -113,6 +113,8 @@ public class MainScreen {
             if(node instanceof Button){
                 ((Button) node).setMinSize(200, 70);
                 ((Button) node).setFont(new Font(20));
+                ((Button) node).setTextFill(Color.WHITE);
+                ((Button) node).setStyle("-fx-background-color: #483D8B");
 //                node.setStyle(value);
                 node.setOnMouseEntered(e->{
                     
@@ -196,7 +198,7 @@ public class MainScreen {
     }
 
     private void vertexto() {
-        TextoScreen m= new TextoScreen(f);
+        TextoScreen m= new TextoScreen(f,l.getText());
         Scene s= new Scene(m.getroot(), 800, 500);
         Stage st=(Stage)root.getScene().getWindow();
        

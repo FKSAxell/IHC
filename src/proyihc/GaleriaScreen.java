@@ -19,7 +19,9 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.DoubleBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -63,6 +65,7 @@ public class GaleriaScreen {
     GridPane  root;
     HBox hBotones;
     File f;
+    Label caption;
     PieChart piePalabras, pieAportaciones;
     ArrayList<Estudiante> estudiantes;
     DatosExcel datosE;
@@ -99,19 +102,21 @@ public class GaleriaScreen {
         cantAne.setOnAction(e->insertar("Cantidad de Anexos"));*/
         //root.setMinSize(400, 200); 
         root.setPadding(new Insets(10, 10, 10, 10)); 
-        root.setVgap(5); 
-        root.setHgap(5);
+        root.setVgap(10); 
+        root.setHgap(10);
+        caption= new Label("");
+        caption.setTextFill(Color.WHITE);
         root.setAlignment(Pos.CENTER);
         //hBotones.getChildren().addAll(cantPal,cantApo,cantAne);
         hBotones.setAlignment(Pos.CENTER);
         root.add(hBotones,1,0);
-        root.add(volver,0,5);
+        root.add(volver,1,6);
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         piePalabras = createPiePalabras("Cantidad de Palabras");
         pieAportaciones = createPieAportaciones("Cantidad de Aportaciones");
         root.add(piePalabras, 1, 3);
         root.add(pieAportaciones, 3, 3);
-       
+        root.add(caption,1,0);
     }
     public PieChart createPiePalabras(String titulo) {
         for(Estudiante e: estudiantes){
@@ -130,6 +135,19 @@ public class GaleriaScreen {
                         Bindings.concat(datos.getName()+" ingresó "+datos.getPieValue()+" palabras")
                 )
         );
+        DoubleBinding total = Bindings.createDoubleBinding(() ->
+        data.stream().collect(Collectors.summingDouble(PieChart.Data::getPieValue)), data);
+        for (final PieChart.Data data1 : pie.getData()) {
+        data1.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
+            e -> {
+                caption.setTranslateX(e.getSceneX()-10);
+                caption.setTranslateY(e.getSceneY()-10);
+                String text = String.format("%.1f%%", 100*data1.getPieValue()/total.get()) ;
+                
+                caption.setText(text);
+             }
+            );
+    }
         pie.setLegendSide(Side.BOTTOM);
         return pie;
     }
@@ -143,14 +161,26 @@ public class GaleriaScreen {
         }
         
         pie.setData(data);
-        pie.setLabelsVisible(false);
+        
+        pie.setLabelsVisible(true);
         pie.setTitle(titulo);
         data.forEach(datos ->
                 datos.nameProperty().bind(
-                        Bindings.concat(datos.getName()+" realizó "+datos.getPieValue()+" aportaciones")
+                        Bindings.concat(datos.getName()+":  "+datos.getPieValue()+" Aportaciones")
                 )
         );
-        
+        DoubleBinding total = Bindings.createDoubleBinding(() ->
+        data.stream().collect(Collectors.summingDouble(PieChart.Data::getPieValue)), data);
+        for (final PieChart.Data data1 : pie.getData()) {
+        data1.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
+            e -> {
+                caption.setTranslateX(e.getSceneX()-10);
+                caption.setTranslateY(e.getSceneY()-10);
+                String text = String.format("%.1f%%", 100*data1.getPieValue()/total.get()) ;
+                caption.setText(text);
+             }
+            );
+    }
         pie.setLegendSide(Side.BOTTOM);
         return pie;
     }

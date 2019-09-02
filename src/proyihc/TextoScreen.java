@@ -5,21 +5,11 @@
  */
 package proyihc;
 
-import MODEL.Estudiante;
 import MODEL.Version;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.stream.Collectors;
+import javafx.application.Platform;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -31,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,14 +28,13 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jsoup.Jsoup;
 
 
@@ -60,8 +48,10 @@ public class TextoScreen {
     Button volver;
     VBox root,v,v1;
     HBox h1;
-    ScrollPane menuBotones;
+    ScrollPane menuBotones,scrtext;
     TextArea text;
+    TextFlow textt;
+    Text t;
     int var=200;
     static int i=0;
     String nombrepag;
@@ -78,10 +68,22 @@ public class TextoScreen {
         return root;
     }
     public void InicializarComponentes(){
+        
         root= new VBox(05);
         l= new Label(nombrepag);
         caption=new Label();
         l.setFont(new Font(20));
+        t=new Text();
+        t.setWrappingWidth(300);
+        textt= new TextFlow();
+        textt.getChildren().addListener(
+                (ListChangeListener<Node>) ((change) -> {
+                    textt.layout();
+                    scrtext.layout();
+                    scrtext.setVvalue(1.0f);
+                }));
+        
+        
         text= new TextArea();
         text.setMinSize(620, 360);
         text.setEditable(false);
@@ -99,6 +101,17 @@ public class TextoScreen {
         h1= new HBox(5);
         v1= new VBox(5);
         v1.setPadding(new Insets(5, 0, 10, 0));
+        
+        scrtext= new ScrollPane();
+        scrtext.setMinSize(620, 360);
+        scrtext.setMaxSize(620, 360);
+        scrtext.setStyle("-fx-background-color: transparent");
+        scrtext.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrtext.setContent(textt);
+        scrtext.setFitToWidth(true);
+        scrtext.setFitToHeight(true);
+        
+        
         menuBotones = new ScrollPane();
         menuBotones.setStyle("-fx-background-color: transparent");
         menuBotones.autosize();
@@ -106,11 +119,16 @@ public class TextoScreen {
         menuBotones.setContent(v1);
         v= new VBox(10);
         v.setPadding(new Insets(10, 20, 05, 10));
-        v.getChildren().addAll(text,volver);
+        
+//        v.getChildren().addAll(text,volver);
+        
+        v.getChildren().addAll(scrtext,volver);
+        
         h1.getChildren().addAll(v,menuBotones);
         root.getChildren().addAll(h,h1);
         volver.setOnAction(e-> volver());
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
+    
     }
     public void Diseño(){
         ObservableList<Node> o=v1.getChildren();
@@ -169,7 +187,23 @@ public class TextoScreen {
         }
         
     }
+    public void appendBold(String msg) { //similar for italic and regular
+    append(msg, "-fx-font-weight: bold");
+}
 
+private synchronized void append(String msg, String style) {
+    Platform.runLater(() -> {
+        textt.getChildren().remove(t);
+        t.setText(msg);
+        
+        t.setFont(Font.font(13));
+        if (!style.equals("")) {
+            t.setStyle(style);
+        }
+        
+        textt.getChildren().add(t);
+    });
+}
     private void volver() {
         MainScreen m= new MainScreen(f);
         Scene s= new Scene(m.getroot(), 800, 500);
@@ -188,7 +222,9 @@ public class TextoScreen {
         public void handle(ActionEvent ke) {
             //Eliminar etiquetas html
             l.setText(nombrepag+"\t- "+v.getResponsable());
-            text.setText(Jsoup.parse(v.getVersionA()).wholeText());
+//            t.setText(Jsoup.parse(v.getVersionA()).wholeText());
+            append(Jsoup.parse(v.getVersionA()).wholeText(),"");
+            text.appendText(Jsoup.parse(v.getVersionA()).wholeText());
            
         }
     }
