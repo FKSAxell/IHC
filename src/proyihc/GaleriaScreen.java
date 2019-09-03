@@ -127,8 +127,8 @@ public class GaleriaScreen {
         for (final PieChart.Data data1 : pie.getData()) {
         data1.getNode().addEventHandler(MouseEvent.MOUSE_CLICKED,
             e -> {
-                caption.setTranslateX(e.getSceneX()-10);
-                caption.setTranslateY(e.getSceneY()-10);
+                caption.setTranslateX(e.getSceneX()-490);
+                caption.setTranslateY(e.getSceneY()-110);
                 String text = String.format("%.1f%%", 100*data1.getPieValue()/total.get()) ;
                 
                 caption.setText(text);
@@ -161,8 +161,8 @@ public class GaleriaScreen {
         for (final PieChart.Data data1 : pie.getData()) {
         data1.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
             e -> {
-                caption.setTranslateX(e.getSceneX()-10);
-                caption.setTranslateY(e.getSceneY()-10);
+                caption.setTranslateX(e.getSceneX()-490);
+                caption.setTranslateY(e.getSceneY()-110);
                 String text = String.format("%.1f%%", 100*data1.getPieValue()/total.get()) ;
                 caption.setText(text);
              }

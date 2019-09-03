@@ -79,7 +79,7 @@ public class LoadingScreen {
         //¡Arrastra el Archivo!
         l.setFont(new Font("Showcard Gothic", 10));
         try {
-            BackgroundImage myBI= new BackgroundImage(new Image("img/3.png",true),
+            BackgroundImage myBI= new BackgroundImage(new Image("img/6.png",true),
             BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
             BackgroundSize.DEFAULT);
             root.setBackground(new Background(myBI));
@@ -87,8 +87,8 @@ public class LoadingScreen {
             root.setBackground(new Background(new BackgroundFill(Color.DARKTURQUOISE, CornerRadii.EMPTY, Insets.EMPTY)));
         }
         
-        root.setPadding(new Insets(400, 300, 50, 300));
-        root.getChildren().addAll(b,l);
+        root.setPadding(new Insets(400, 300, 10, 530));
+        root.getChildren().addAll(b);
       
         l.setOnMouseEntered(e-> l.setEffect(new DropShadow(10, Color.BLUE)));
         l.setOnMouseExited(e-> l.setEffect(null));

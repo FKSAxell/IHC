@@ -70,7 +70,7 @@ public class TextoScreen {
     public void InicializarComponentes(){
         
         root= new VBox(05);
-        l= new Label(nombrepag);
+        l= new Label(nombrepag.toUpperCase());
         caption=new Label();
         l.setFont(new Font(20));
         t=new Text();
@@ -200,10 +200,10 @@ public class TextoScreen {
         }
     }
     public void obtener(ArrayList<Version> versiones){
-        for (i=0; i < versiones.size(); i++) {
+        for (i=versiones.size()-1; i >=0 ; i--) {
             String ver=((Version)versiones.get(i)).getNo();
 //          Button b= new Button("Version "+ver.substring(0, ver.length()-2));
-            Button b= new Button(((Version)versiones.get(i)).getFecha());
+            Button b= new Button("   Version "+ver+"\n"+((Version)versiones.get(i)).getFecha());
 //            b.setTextFill(Color.WHITE);
 //            b.setStyle("-fx-background-color: #483D8B");
             b.setOpacity(0.95);
@@ -248,7 +248,7 @@ private synchronized void append(String msg, String style) {
         }
         public void handle(ActionEvent ke) {
             //Eliminar etiquetas html
-            l.setText(nombrepag+"\t"+v.getResponsable());
+            l.setText(nombrepag.toUpperCase()+"\t"+v.getResponsable());
 //            t.setText(Jsoup.parse(v.getVersionA()).wholeText());
             append(Jsoup.parse(v.getVersionA()).wholeText(),"");
             text.appendText(Jsoup.parse(v.getVersionA()).wholeText());
@@ -266,9 +266,15 @@ private synchronized void append(String msg, String style) {
     public void MostrarInfo(Version v){
         InfoReporte i= new InfoReporte(v);
         Stage st=new Stage();
-        Scene s=new Scene(i.getroot(),600, 200);
-        st.setTitle(nombrepag);
+        Scene s=new Scene(i.getroot(),600, 300);
+        st.setTitle("Informacion de "+nombrepag);
+        try {
+            st.getIcons().add(new Image(this.getClass().getResource("/img/fondo.png").toString()));
+        } catch (Exception e) {
+             System.err.println(e.getMessage());
+        }
         st.setScene(s);
         st.showAndWait();
+        
     }
 }

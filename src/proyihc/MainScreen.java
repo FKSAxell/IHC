@@ -33,6 +33,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.apache.poi.xssf.usermodel.XSSFCell;
@@ -85,8 +86,8 @@ public class MainScreen {
         GaleriaScreen m= new GaleriaScreen(f);
         
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-        v= new VBox(20);
-        v.setPadding(new Insets(50, 50, 50, 50));
+        v= new VBox(30);
+        v.setPadding(new Insets(80, 50, 50, 50));
         v.getChildren().addAll(texto,anexos,volver);
         v2.getChildren().addAll(h,v);
         texto.setOnAction(e->vertexto());
@@ -94,7 +95,7 @@ public class MainScreen {
         
         
         root.add(v2,0,0);
-        root.add(m.getroot(),1,0);
+        root.add(m.getroot(),2,0);
         /*graficos.setOnAction(e->{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             
@@ -159,6 +160,7 @@ public class MainScreen {
             alert.setTitle("PRECAUCION");
             alert.setHeaderText("");
             alert.setContentText("¿Deseas salir?\n Perderas el presente documento!");
+            
             alert.showAndWait();
             if (alert.getResult()== ButtonType.OK) {
                 LoadingScreen m= new LoadingScreen();
@@ -198,7 +200,10 @@ public class MainScreen {
     public void obtener(List CellDataList){
         for (int i = 0; i < CellDataList.size(); i++) {
             List cellTempList= (List) CellDataList.get(i);
-            l.setText("\t\t"+cellTempList.get(0).toString());
+            l.setText(""+cellTempList.get(0).toString().toUpperCase());
+            l.setWrapText(true);
+            l.setFont(Font.font("System Regular", FontWeight.BOLD, 22));
+            
 //            System.out.println("<<<<<<"+cellTempList.get(i));
             for (int j = 0; j < cellTempList.size(); j++) {
                 XSSFCell celda=(XSSFCell) cellTempList.get(j);

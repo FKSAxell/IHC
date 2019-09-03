@@ -179,6 +179,7 @@ class AnexoScreen {
             
             hFotos.getChildren().add(imageV);      
         }
+        sp.setMinHeight(500);
         sp.setContent(hFotos);
         sp.setHbarPolicy(ScrollBarPolicy.ALWAYS);
         sp.setVbarPolicy(ScrollBarPolicy.NEVER);
