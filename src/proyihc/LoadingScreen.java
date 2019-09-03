@@ -128,7 +128,7 @@ public class LoadingScreen {
     public void CambiarVentana(){
         System.out.println(f.exists());
         MainScreen m= new MainScreen(f);
-        Scene s= new Scene(m.getroot(), 800, 500);
+        Scene s= new Scene(m.getroot(), 1600, 500);
         Stage st=(Stage)root.getScene().getWindow();
         Stage st2=new Stage(StageStyle.UNIFIED);
         st.setScene(s);

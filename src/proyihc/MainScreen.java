@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Scanner;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -27,6 +28,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -45,9 +47,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class MainScreen {
     Label l;
     File f;
-    Button texto,graficos,anexos,volver;
-    VBox root,v;
-    
+    Button texto,anexos,volver;
+    VBox v2,v;
+    GridPane root;
     public MainScreen(File f){
         this.f=f;
         InicializarComponentes();
@@ -60,29 +62,39 @@ public class MainScreen {
         return root;
     }
     public void InicializarComponentes(){
-        root= new VBox(20);
+        v2= new VBox(5);
+        root=new GridPane();
+        root.setPadding(new Insets(10, 10, 10, 10)); 
+        root.setVgap(10); 
+        root.setHgap(10);
+        
         l= new Label();
         l.setFont(new Font(20));
-        texto= new Button("Ver Texto");
-        graficos= new Button("Ver Graficos");
-        anexos= new Button("Ver Anexos");
-        volver= new Button("Volver");
-        HBox h= new HBox(30);
-        h.setPadding(new Insets(40, 50, 0, 80));
+        root.setAlignment(Pos.CENTER);
+        texto= new Button("Ver Texto del Documento");
+        anexos= new Button("Ver Imagenes Adjuntas");
+        volver= new Button("Volver a Cargar otro Documento");
+        HBox h= new HBox(5);
+        h.setPadding(new Insets(0, 0, 0, 0));
         ImageView im= new ImageView(new Image("img/logo.png"));
         im.setOpacity(0.94);
         im.setFitWidth(70);
         im.setFitHeight(70);
         h.getChildren().addAll(l);
         
+        GaleriaScreen m= new GaleriaScreen(f);
+        
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         v= new VBox(20);
-        v.setPadding(new Insets(50, 300, 50, 300));
-        v.getChildren().addAll(texto,graficos,anexos,volver);
-        root.getChildren().addAll(h,v);
+        v.setPadding(new Insets(50, 50, 50, 50));
+        v.getChildren().addAll(texto,anexos,volver);
+        v2.getChildren().addAll(h,v);
         texto.setOnAction(e->vertexto());
-        graficos.setOnAction(e->verGraficos());
         anexos.setOnAction(e->verAnexo());
+        
+        
+        root.add(v2,0,0);
+        root.add(m.getroot(),1,0);
         /*graficos.setOnAction(e->{
             Alert alert = new Alert(Alert.AlertType.ERROR);
             
@@ -106,13 +118,12 @@ public class MainScreen {
         });*/
         volver.setOnAction(e->volver());
         
-        
     }
     public void Diseño(){
         ObservableList<Node> o=v.getChildren();
         for (Node node : o) {
             if(node instanceof Button){
-                ((Button) node).setMinSize(200, 70);
+                ((Button) node).setMinSize(350, 70);
                 ((Button) node).setFont(new Font(20));
                 ((Button) node).setTextFill(Color.WHITE);
                 ((Button) node).setStyle("-fx-background-color: #483D8B");
@@ -206,14 +217,6 @@ public class MainScreen {
         st.setScene(s);
     }
     
-    private void verGraficos(){
-        GaleriaScreen m= new GaleriaScreen(f);
-        Scene s= new Scene(m.getroot(), 800, 500);
-        Stage st=(Stage)root.getScene().getWindow();
-       
-        st.setScene(s);
-        
-    }
     private void verAnexo(){
         AnexoScreen m= new AnexoScreen(f);
         Scene s= new Scene(m.getroot(), 800, 500);

@@ -233,7 +233,7 @@ private synchronized void append(String msg, String style) {
 }
     private void volver() {
         MainScreen m= new MainScreen(f);
-        Scene s= new Scene(m.getroot(), 800, 500);
+        Scene s= new Scene(m.getroot(), 1600, 500);
         Stage st=(Stage)root.getScene().getWindow();
        
         st.setScene(s);

@@ -77,25 +77,8 @@ public class GaleriaScreen {
         /*cantPal= new Button("Cantidad de Palabras");
         cantApo= new Button("Cantidad de Aportaciones");
         cantAne= new Button("Cantidad de Anexos");*/
-        volver= new Button("Volver");
-        volver.setTextFill(Color.WHITE);
-        volver.setStyle("-fx-background-color: #483D8B");
-        volver.setTextFill(Color.WHITE);
-        volver.setFont(new Font(20));
-                volver.setStyle("-fx-background-color: #483D8B");
-//                node.setStyle(value);
-                volver.setOnMouseEntered(e->{
-                    
-                   
-                   volver.setEffect(new Glow(0.5));
-                });
-                volver.setOnMouseExited(e->{
-                    volver.setFont(new Font(20));
-                    volver.setEffect(null);
-                });
         root = new GridPane(); 
         hBotones= new HBox();
-        volver.setOnAction(e-> volver());
         /*cantPal.setOnAction(e->insertar("Cantidad de Palabras"));
         cantApo.setOnAction(e->insertar("Cantidad de Aportaciones"));
         cantAne.setOnAction(e->insertar("Cantidad de Anexos"));*/
@@ -109,7 +92,6 @@ public class GaleriaScreen {
         //hBotones.getChildren().addAll(cantPal,cantApo,cantAne);
         hBotones.setAlignment(Pos.CENTER);
         root.add(hBotones,1,0);
-        root.add(volver,1,6);
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         piePalabras = createPiePalabras("Cantidad de Palabras");
         pieAportaciones = createPieAportaciones("Cantidad de Aportaciones");
@@ -190,13 +172,6 @@ public class GaleriaScreen {
         return pie;
     }
     
-    private void volver() {
-        MainScreen m= new MainScreen(f);
-        Scene s= new Scene(m.getroot(), 800, 500);
-        Stage st=(Stage)root.getScene().getWindow();
-       
-        st.setScene(s);
-    }
     
     public ArrayList<Estudiante> contadorPalabras(){
         boolean controlador = true;
