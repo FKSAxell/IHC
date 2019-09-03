@@ -85,7 +85,7 @@ public class TextoScreen {
         
         
         text= new TextArea();
-        text.setMinSize(620, 360);
+        text.setMinSize(920, 360);
         text.setEditable(false);
         text.setWrapText(true);
         volver = new Button("Volver");
@@ -103,8 +103,8 @@ public class TextoScreen {
         v1.setPadding(new Insets(5, 0, 10, 0));
         
         scrtext= new ScrollPane();
-        scrtext.setMinSize(620, 380);
-        scrtext.setMaxSize(620, 360);
+        scrtext.setMinSize(1020, 380);
+        scrtext.setMaxSize(1020, 380);
         scrtext.setStyle("-fx-background-color: transparent");
         scrtext.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrtext.setContent(textt);
@@ -233,7 +233,7 @@ private synchronized void append(String msg, String style) {
 }
     private void volver() {
         MainScreen m= new MainScreen(f);
-        Scene s= new Scene(m.getroot(), 1600, 500);
+        Scene s= new Scene(m.getroot(), 1200, 600);
         Stage st=(Stage)root.getScene().getWindow();
        
         st.setScene(s);

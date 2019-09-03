@@ -162,7 +162,7 @@ class AnexoScreen {
     }
      private void volver() {
         MainScreen m= new MainScreen(f);
-        Scene s= new Scene(m.getroot(), 800, 500);
+        Scene s= new Scene(m.getroot(), 1200, 600);
         Stage st=(Stage)todo.getScene().getWindow();
         st.setScene(s);
     }

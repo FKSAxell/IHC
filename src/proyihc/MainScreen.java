@@ -73,7 +73,7 @@ public class MainScreen {
         root.setAlignment(Pos.CENTER);
         texto= new Button("Ver Texto del Documento");
         anexos= new Button("Ver Imagenes Adjuntas");
-        volver= new Button("Volver a Cargar otro Documento");
+        volver= new Button("Cargar otro Documento");
         HBox h= new HBox(5);
         h.setPadding(new Insets(0, 0, 0, 0));
         ImageView im= new ImageView(new Image("img/logo.png"));
@@ -162,7 +162,7 @@ public class MainScreen {
             alert.showAndWait();
             if (alert.getResult()== ButtonType.OK) {
                 LoadingScreen m= new LoadingScreen();
-                 Scene s= new Scene(m.getroot(), 850, 550);
+                 Scene s= new Scene(m.getroot(), 1200, 600);
                 Stage st=(Stage)root.getScene().getWindow();
        
                 st.setScene(s);
@@ -211,7 +211,7 @@ public class MainScreen {
 
     private void vertexto() {
         TextoScreen m= new TextoScreen(f,l.getText());
-        Scene s= new Scene(m.getroot(), 800, 550);
+        Scene s= new Scene(m.getroot(), 1200, 600);
         Stage st=(Stage)root.getScene().getWindow();
        
         st.setScene(s);
@@ -219,7 +219,7 @@ public class MainScreen {
     
     private void verAnexo(){
         AnexoScreen m= new AnexoScreen(f);
-        Scene s= new Scene(m.getroot(), 800, 500);
+        Scene s= new Scene(m.getroot(), 1200, 600);
         Stage st=(Stage)root.getScene().getWindow();
        
         st.setScene(s);
