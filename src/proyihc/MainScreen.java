@@ -200,7 +200,7 @@ public class MainScreen {
 
     private void vertexto() {
         TextoScreen m= new TextoScreen(f,l.getText());
-        Scene s= new Scene(m.getroot(), 800, 500);
+        Scene s= new Scene(m.getroot(), 800, 550);
         Stage st=(Stage)root.getScene().getWindow();
        
         st.setScene(s);

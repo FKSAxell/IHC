@@ -124,12 +124,12 @@ public class TextoScreen {
         menuaba= new HBox(200);
         info= new Button("Ver Info");
         info.setDisable(true);
-        menuaba.getChildren().addAll(volver,info);
+        menuaba.getChildren().addAll(info);
         v.setPadding(new Insets(10, 20, 05, 10));
         
 //        v.getChildren().addAll(text,volver);
         
-        v.getChildren().addAll(menuaba,scrtext);
+        v.getChildren().addAll(menuaba,scrtext,volver);
         scrtext.setOnMouseEntered(e->{
             info.setEffect(new Glow(05));
         });
@@ -141,7 +141,19 @@ public class TextoScreen {
         root.getChildren().addAll(h,h1);
         volver.setOnAction(e-> volver());
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-    
+        
+        volver.setMaxSize(100, 05);
+        volver.setFont(new Font(20));
+        volver.setTextFill(Color.WHITE);
+        volver.setStyle("-fx-background-color: #483D8B");
+        volver.setOnMouseEntered(e->{
+            volver.setFont(new Font(20));
+            volver.setEffect(new Glow(0.5));
+        });
+        volver.setOnMouseExited(e->{
+            volver.setFont(new Font(20));
+            volver.setEffect(null);
+        });
     }
     public void Diseño(){
         ObservableList<Node> o=menuaba.getChildren();
@@ -167,6 +179,7 @@ public class TextoScreen {
     }
     public void DiseñoVersiones(){
         ObservableList<Node> o=v.getChildren();
+        o.add(volver);
         for (Node node : o) {
             if(node instanceof Button){
                 ((Button) node).setMinSize(80, 20);
