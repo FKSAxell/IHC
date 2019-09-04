@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -88,7 +89,7 @@ public class MainScreen {
         
         root.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
         v= new VBox(30);
-        v.setPadding(new Insets(80, 50, 50, 50));
+        v.setPadding(new Insets(80, 0, 50, 10));
         v.getChildren().addAll(texto,anexos,volver);
         v2.getChildren().addAll(h,v);
         texto.setOnAction(e->vertexto());
@@ -125,7 +126,7 @@ public class MainScreen {
         ObservableList<Node> o=v.getChildren();
         for (Node node : o) {
             if(node instanceof Button){
-                ((Button) node).setMinSize(350, 70);
+                ((Button) node).setMinSize(340, 70);
                 ((Button) node).setFont(new Font(20));
                 ((Button) node).setTextFill(Color.WHITE);
                 ((Button) node).setStyle("-fx-background-color: #483D8B");
@@ -224,9 +225,10 @@ public class MainScreen {
     }
     
     private void verAnexo(){
+       
         
         AnexoScreen m= new AnexoScreen(f);
-        Scene s= new Scene(m.getroot(), 1200, 600);
+        Scene s= new Scene(m.getroot(), 1200, 650);
         Stage st=(Stage)root.getScene().getWindow();
         
         st.setScene(s);
@@ -238,16 +240,17 @@ public class MainScreen {
     @Override
     public void run(){
         try {
+            
             Thread.sleep(5000);
             Platform.runLater(() -> {
                 AnexoScreen m= new AnexoScreen(f);
                 Scene s= new Scene(m.getroot(), 1200, 600);
                 Stage st=(Stage)root.getScene().getWindow();
         
-                 st.setScene(s);
+                st.setScene(s);
       
                 st.show();
-            root.getScene().getWindow().hide();
+                
             }
                 
             );

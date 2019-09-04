@@ -125,6 +125,8 @@ public class TextoScreen {
         menuaba= new HBox(200);
         menuaba.setAlignment(Pos.CENTER);
         info= new Button("Ver Info");
+        info.setFont(Font.font(8));
+        info.setWrapText(true);
         info.setDisable(true);
         menuaba.getChildren().addAll(info);
         v.setPadding(new Insets(10, 20, 05, 10));
@@ -161,7 +163,7 @@ public class TextoScreen {
         ObservableList<Node> o=menuaba.getChildren();
         for (Node node : o) {
             if(node instanceof Button){
-                ((Button) node).setMaxSize(100, 05);
+                ((Button) node).setMaxSize(150, 05);
                 ((Button) node).setFont(new Font(20));
                 ((Button) node).setTextFill(Color.WHITE);
                 ((Button) node).setStyle("-fx-background-color: #483D8B");
@@ -260,7 +262,7 @@ private synchronized void append(String msg, String style) {
         }
         public void handle(ActionEvent ke) {
             //Eliminar etiquetas html
-            l.setText(nombrepag.toUpperCase()+"\t"+v.getResponsable());
+            l.setText(nombrepag.toUpperCase()+"\t -\t"+v.getResponsable());
 //            t.setText(Jsoup.parse(v.getVersionA()).wholeText());
             append(Jsoup.parse(v.getVersionA()).wholeText(),"");
             text.appendText(Jsoup.parse(v.getVersionA()).wholeText());

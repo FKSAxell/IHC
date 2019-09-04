@@ -52,10 +52,11 @@ public class InfoReporte {
         t.setFont(Font.font(20));
         t.install(root, t);
         ToolTipManager.sharedInstance().setInitialDelay(0);
-        lu.setFont(Font.font("System Regular", FontWeight.BOLD, 15));
-        lf.setFont(Font.font("System Regular", FontWeight.BOLD, 15));
-        la.setFont(Font.font("System Regular", FontWeight.BOLD, 15));
-        lblNombre.setFont(Font.font("System Regular", FontWeight.BOLD, 15));
+        lu.setMinSize(100, 20);
+        lu.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        lf.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        la.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        lblNombre.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         root.add(lu, 0, 1);
         root.add(lf, 0, 2);
         root.add(la, 0, 3);
