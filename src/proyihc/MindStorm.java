@@ -28,7 +28,7 @@ public class MindStorm extends Application {
         }
         st.setScene(scene);
        
-        
+        st.setResizable(false);
         st.setOpacity(0.96);
         st.show();
     }

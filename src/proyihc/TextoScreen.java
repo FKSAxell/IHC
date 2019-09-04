@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -122,6 +123,7 @@ public class TextoScreen {
             System.out.println(e.getX()+" "+ e.getY());
         });
         menuaba= new HBox(200);
+        menuaba.setAlignment(Pos.CENTER);
         info= new Button("Ver Info");
         info.setDisable(true);
         menuaba.getChildren().addAll(info);
@@ -204,13 +206,23 @@ public class TextoScreen {
             String ver=((Version)versiones.get(i)).getNo();
 //          Button b= new Button("Version "+ver.substring(0, ver.length()-2));
             Button b= new Button("   Version "+ver+"\n"+((Version)versiones.get(i)).getFecha());
-//            b.setTextFill(Color.WHITE);
-//            b.setStyle("-fx-background-color: #483D8B");
+            b.setTextFill(Color.WHITE);
+            b.setStyle("-fx-background-color: #483D8B");
             b.setOpacity(0.95);
             v1.getChildren().add(b);
             v1.setStyle("-fx-background-color: transparent");
             b.setOnAction(new TextoScreen.botonEvent((Version) versiones.get(i)));
-            
+            b.setOnMouseClicked(e->{
+                b.setDisable(true);
+                b.setStyle("-fx-background-color: grey");
+                ObservableList<Node> ob=v1.getChildren();
+                for (Node ob1 : ob) {
+                    if(ob1 instanceof Button && ((Button)ob1)!=b){
+                        ((Button)ob1).setDisable(false);
+                        ((Button)ob1).setStyle("-fx-background-color: #483D8B");
+                    }
+                }
+            });
         }
         
     }

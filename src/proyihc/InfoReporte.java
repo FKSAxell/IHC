@@ -10,10 +10,12 @@ import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
+import javax.swing.ToolTipManager;
 import org.jsoup.Jsoup;
 
 /**
@@ -46,6 +48,10 @@ public class InfoReporte {
         lu=new Label("Usuario:");
         lf=new Label("Fecha:");
         la=new Label("Aporte:");
+        Tooltip t= new Tooltip("[+] Texto Agregado\n [-] Texto Eliminado");
+        t.setFont(Font.font(20));
+        t.install(root, t);
+        ToolTipManager.sharedInstance().setInitialDelay(0);
         lu.setFont(Font.font("System Regular", FontWeight.BOLD, 15));
         lf.setFont(Font.font("System Regular", FontWeight.BOLD, 15));
         la.setFont(Font.font("System Regular", FontWeight.BOLD, 15));

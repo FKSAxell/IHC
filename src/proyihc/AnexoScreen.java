@@ -49,7 +49,7 @@ import javax.swing.ToolTipManager;
 class AnexoScreen {
     Button cantPal,cantApo,cantAne,volver;
     GridPane  root;
-    HBox hBotones,usuarios,hFotos;
+    HBox hBotones,usuarios,hvolver;
     Label titulo;
     File f;
     Label caption;
@@ -59,9 +59,9 @@ class AnexoScreen {
     ArrayList<Version> versiones;
     ArrayList<String> estudiantesRepetidos;
     Button estudianteB;
-    VBox todo;
+    VBox todo,hFotos;
     ScrollPane sp;
-    
+    boolean flag=true;
 
     public AnexoScreen(File f){
         this.f=f;
@@ -113,12 +113,13 @@ class AnexoScreen {
         cantApo.setOnAction(e->insertar("Cantidad de Aportaciones"));
         cantAne.setOnAction(e->insertar("Cantidad de Anexos"));*/
         //root.setMinSize(400, 200); 
-        root.setPadding(new Insets(10, 10, 10, 10)); 
+        root.setPadding(new Insets(0, 10, 10, 10)); 
         root.setVgap(10); 
         root.setHgap(10);
-        hFotos= new HBox();
+        hFotos= new VBox();
         usuarios = new HBox();
-        root.add(hFotos, 1, 2);
+        
+        //root.add(hFotos, 1, 2);
         titulo = new Label();
         titulo.setFont(new Font(20));
         int contUrl=0;
@@ -133,7 +134,7 @@ class AnexoScreen {
             
         }
         if(contUrl ==0){
-            /* Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
             
             alert.setTitle("NO HAY ANEXOS");
             alert.setHeaderText("");
@@ -141,8 +142,9 @@ class AnexoScreen {
             
 
 
-            alert.showAndWait();*/
-            titulo.setText("No hay Anexos que mostrar");
+            alert.showAndWait();
+            volver();
+            //titulo.setText("No hay Anexos que mostrar");
             
             
         }else{
@@ -156,7 +158,11 @@ class AnexoScreen {
         root.add(hBotones,1,0);
         
         todo.setBackground(new Background(new BackgroundFill(Color.ALICEBLUE, CornerRadii.EMPTY, Insets.EMPTY)));
-        todo.getChildren().addAll(titulo,usuarios,root,volver);
+        hvolver= new HBox();
+        hvolver.setPadding(new Insets(0,0,10,0));
+        hvolver.getChildren().add(volver);
+        hvolver.setAlignment(Pos.CENTER_LEFT);
+        todo.getChildren().addAll(titulo,usuarios,root,hvolver);
         
 
     }
@@ -168,28 +174,28 @@ class AnexoScreen {
     }
     private void colocarFotos(Estudiante est){
         root.getChildren().remove(sp);
-        hFotos= new HBox();
+        hFotos= new VBox(5);
         sp= new ScrollPane();
         titulo.setText("Anexos de "+est.getNombre());
         for (int i = 0; i<est.getUrls().size(); i++){
             Image image = new Image("File:./src/img/"+est.getNombre().split(" ")[2]+ Integer.toString(i)+".jpg");
             ImageView imageV= new ImageView(image);
-             imageV.setFitHeight(250);
-             imageV.setFitWidth(300);
+             imageV.setFitHeight(600);
+             imageV.setFitWidth(1000);
             
             hFotos.getChildren().add(imageV);      
         }
         sp.setMinHeight(500);
         sp.setContent(hFotos);
-        sp.setHbarPolicy(ScrollBarPolicy.ALWAYS);
-        sp.setVbarPolicy(ScrollBarPolicy.NEVER);
+        sp.setHbarPolicy(ScrollBarPolicy.NEVER);
+        sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
         root.add(sp, 1, 2);
         
         
     }
     private void inicializarFotos(){
         sp= new ScrollPane();
-        hFotos= new HBox();
+        hFotos= new VBox(5);
         titulo.setText("Todos los Anexos");
         for (Estudiante est: estudiantes){
             String nombre= est.getNombre().split(" ")[2];
@@ -197,22 +203,24 @@ class AnexoScreen {
             for (int i = 0; i<est.getUrls().size(); i++){
                 Image image = new Image("File:./src/img/"+est.getNombre().split(" ")[2]+ Integer.toString(i)+".jpg");
                 ImageView imageV= new ImageView(image);
-                imageV.setFitHeight(250);
-                imageV.setFitWidth(300);
+                imageV.setFitHeight(600);
+                imageV.setFitWidth(1000);
                 hFotos.getChildren().add(imageV);
                 
             }
         }
         sp.setContent(hFotos);
-        sp.setHbarPolicy(ScrollBarPolicy.ALWAYS);
-        sp.setVbarPolicy(ScrollBarPolicy.NEVER);
+        sp.setHbarPolicy(ScrollBarPolicy.NEVER);
+        sp.setVbarPolicy(ScrollBarPolicy.ALWAYS);
         root.add(sp, 1, 2);
         
     }
     private void descargaFotos(){
+        
         for (Estudiante est : estudiantes){
             String nombre= est.getNombre().split(" ")[2];
             int idFoto=0;
+            
             for (String urlR: est.getUrls()){
                 try {
                 // Url con la foto
@@ -221,11 +229,10 @@ class AnexoScreen {
                 URL url = new URL(urlR);
                 // establecemos conexion
                 URLConnection urlCon = url.openConnection();
-                urlCon.setRequestProperty("Cookie","_csrf_token=fz0Y4npHh95H4tr2oDnJgZjwRHYoN6O92jZEEjAal%2F0pSyyUSQDUvRCBsYLBDfHqypYcGVB489KPTyxjd0DxsA%3D%3D;"
-                        + "_normandy_session=f_pjLN7t34gVyhWgrXqdRA+4ifnT65s_p0DCqKSpC5VY3VfU3x-3RxqHcPrg01_-0zm7s5vJJOOoHMgBkjgqMkGbica9NI12UHK_rZRy23FaNxVgQcCp_jm42nrZTzhsW7Zgmz8b2DIrLRyBd2CqHZNla-tbTdbLDCAZn9nK5tnwXfiUYFtcwnRGoRcMK1x4rVTVNjoMXSOG88EiNGotVBfWRnA1IJDGXzqLREZK856MWinIsoCuUGSsuAYyI4YyOid4OJNGtBSlY49trKKDu1TSkzAMTJo7nx8VHrJLVLWdGgU-k3S3tjh8JuJKuv3hRjUM5bEUhk_X2Ktli1ss5O1OE1bhjloCE6kOgHPH9yg7NNkCepR-3R7TG1o_i51V04.Tzmkoa8Up2Rq8SufP78OtTz8pXk.XWyClg;"
-                        + "log_session_id=1664404c9cf4a101002b05eef74a8435;"
+                urlCon.setRequestProperty("Cookie","_csrf_token=y2vB95N%2B9S7MfjdOBitxAh6kfKBaxNuwNupu08VOC4ObDYWnoiqkRq5GWwJKHhVnUJQm1x%2BqjOdzp1yrgRpm9g%3D%3D;"
+                        + "_normandy_session=Pr2uDjWHzm3Q6Udpz9m0uw+6ratozTlnQZ3tu-PqjS5l2_X5O_zARhWrYQLNqV1sYqCo5eHTpNSy43S8-BjRHRxT_Bxp4FCF5JxtHxlNDpqXajxNUy3ZYhSO92UZ0tsN-ELX225aj4sy7GIGxI8Js33Ll6TQcuYiUT8xOW95XSCn5yW8WtFawHQGVq4n7kZKl1DYwPb6xYXSpNTvgNEeTnQFhyjt7ChIOXxp1ufuS0bqmFTHovSw2Ox9GRXOsXIcevhBGa9VzbT7gc08bpEX8qNiG2_Ou2IewfO5ra35QADTb4RktsU6N8DUoOM3MBw_O4Cz7kcj1VHqceYUangCHrj6pgOlfi-5nQ8VpGgMvY1sR-_vK1qH3S_-2dtsDwkmuQ.YnHMg9jh5DEaF5F1zas4Ciu57-s.XW6wbA;"
+                        + "log_session_id=8e39d52a74c08f64102e0477be68d83b;"
                         );
-
                 // Sacamos por pantalla el tipo de fichero
                 
                 // Se obtiene el inputStream de la foto web y se abre el fichero
@@ -244,6 +251,7 @@ class AnexoScreen {
 
                 // cierre de conexion y fichero.
                 is.close();
+                flag=false;
                 fos.close();
             } catch (Exception e) {
                     e.printStackTrace();
@@ -313,5 +321,17 @@ class AnexoScreen {
             estudiantesRepetidos.add(v.getResponsable());
         }
         return estudiantesRepetidos;
+    }
+    public void cargando(){
+        Stage st= new Stage();
+        Stage main=((Stage)todo.getScene().getWindow());
+        VBox v= new VBox();
+        ImageView im=new ImageView();
+        v.getChildren().add(im);
+        Scene sc= new Scene(v,800,600);
+        st.setScene(sc);
+        main.hide();
+        st.show();
+        if(flag==false) main.show();
     }
 }

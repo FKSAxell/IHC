@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -223,11 +224,43 @@ public class MainScreen {
     }
     
     private void verAnexo(){
+        
         AnexoScreen m= new AnexoScreen(f);
         Scene s= new Scene(m.getroot(), 1200, 600);
         Stage st=(Stage)root.getScene().getWindow();
-       
+        
         st.setScene(s);
+      
+        st.show();
         
     }
+    class loading extends Thread {
+    @Override
+    public void run(){
+        try {
+            Thread.sleep(5000);
+            Platform.runLater(() -> {
+                AnexoScreen m= new AnexoScreen(f);
+                Scene s= new Scene(m.getroot(), 1200, 600);
+                Stage st=(Stage)root.getScene().getWindow();
+        
+                 st.setScene(s);
+      
+                st.show();
+            root.getScene().getWindow().hide();
+            }
+                
+            );
+            
+        } catch (Exception e) {
+        }
+    }
+    }
+
+    
 }
+
+
+
+
+
